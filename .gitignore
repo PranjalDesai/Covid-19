@@ -1,3 +1,6 @@
+# Secrets
+keystore.properties
+./keystore.properties
 *.iml
 .gradle
 /local.properties
@@ -11,5 +14,4 @@
 /build
 /captures
 .externalNativeBuild
-.cxx
-keystore.properties
+.cxxs
