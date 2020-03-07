@@ -1,0 +1,12 @@
+ext {
+    keystoreProperties = new Properties()
+}
+
+def fileName = "keystore.properties"
+
+if (!rootProject.file(fileName).exists()) {
+    fileName += ".template"
+}
+
+def propertiesFile = rootProject.file(fileName)
+keystoreProperties.load(new FileInputStream(propertiesFile))

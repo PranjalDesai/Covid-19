@@ -9,10 +9,9 @@ buildscript {
         maven { url 'https://dl.bintray.com/kotlin/kotlin-dev' }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.0-beta01"
+        classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$navigation_safe_args_version"
-        classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "io.fabric.tools:gradle:$fabric_gradle_version"
         classpath "com.google.gms:google-services:$google_services_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
