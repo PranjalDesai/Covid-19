@@ -1,3 +1,25 @@
 <resources>
+    <!-- Settings View -->
     <string name="app_name">Coronavirus Tracker</string>
+    <string name="no_connection_text">Network Disconnected</string>
+    <string name="error_unknown">Request failed due to unknown error</string>
+    <string name="default_error">Something went wrong!</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+
+    <!-- Sorting Bottom Sheet Dialog -->
+    <string name="sorting_bottom_sheet_newest_text">Newest to Oldest</string>
+    <string name="sorting_bottom_sheet_oldest_text">Oldest to Newest</string>
+    <string name="sorting_bottom_sheet_alphabetical_text">Alphabetical</string>
+    <string name="sorting_bottom_sheet_most_text">Most Infected</string>
+    <string name="sorting_bottom_sheet_least_text">Least Infected</string>
+
+    <!-- Search and Sort Toolbar Menu -->
+    <string name="toolbar_menu_sort">Sort</string>
+    <string name="toolbar_menu_search">Search</string>
+
+    <!-- Bottom Navigation Tab Names -->
+    <string name="bottom_navigation_map_label">Map</string>
+    <string name="bottom_navigation_detail_label">Detail</string>
+
+
 </resources>

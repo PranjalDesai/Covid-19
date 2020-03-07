@@ -1,10 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="statusBarBackground">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="buttonStyle">@style/Button</item>
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:textColorLink">@color/colorPrimary</item>
+        <item name="title">@string/app_name</item>
+    </style>
+
+    <style name="Container">
+        <item name="android:layout_marginBottom">@dimen/margin_container</item>
+        <item name="android:layout_marginEnd">@dimen/margin_container</item>
+        <item name="android:layout_marginStart">@dimen/margin_container</item>
+        <item name="android:layout_marginTop">@dimen/margin_container</item>
+        <item name="android:paddingBottom">@dimen/padding_container</item>
+        <item name="android:paddingEnd">@dimen/padding_container</item>
+        <item name="android:paddingStart">@dimen/padding_container</item>
+        <item name="android:paddingTop">@dimen/padding_container</item>
+    </style>
+
+    <style name="Button" parent="@style/Widget.MaterialComponents.Button">
+        <item name="android:layout_marginBottom">@dimen/margin_button</item>
+        <item name="android:layout_marginEnd">@dimen/margin_button</item>
+        <item name="android:layout_marginStart">@dimen/margin_button</item>
+        <item name="android:layout_marginTop">@dimen/margin_button</item>
+        <item name="android:paddingBottom">@dimen/padding_button</item>
+        <item name="android:paddingEnd">@dimen/padding_button</item>
+        <item name="android:paddingStart">@dimen/padding_button</item>
+        <item name="android:paddingTop">@dimen/padding_button</item>
+    </style>
+
+    <style name="Card" parent="CardView">
+        <item name="android:layout_marginBottom">@dimen/margin_card</item>
+        <item name="android:layout_marginEnd">@dimen/margin_card</item>
+        <item name="android:layout_marginStart">@dimen/margin_card</item>
+        <item name="android:layout_marginTop">@dimen/margin_card</item>
+    </style>
+
+    <style name="Form">
+        <item name="android:layout_marginBottom">@dimen/margin_form</item>
+        <item name="android:layout_marginEnd">@dimen/margin_form</item>
+        <item name="android:layout_marginStart">@dimen/margin_form</item>
+        <item name="android:layout_marginTop">@dimen/margin_form</item>
+        <item name="android:paddingBottom">@dimen/padding_form</item>
+        <item name="android:paddingEnd">@dimen/padding_form</item>
+        <item name="android:paddingStart">@dimen/padding_form</item>
+        <item name="android:paddingTop">@dimen/padding_form</item>
+    </style>
+
+    <style name="Window">
+        <item name="android:background">@color/window_background</item>
+        <item name="android:layout_marginBottom">@dimen/margin_window</item>
+        <item name="android:layout_marginEnd">@dimen/margin_window</item>
+        <item name="android:layout_marginStart">@dimen/margin_window</item>
+        <item name="android:layout_marginTop">@dimen/margin_window</item>
+        <item name="android:paddingBottom">@dimen/padding_window</item>
+        <item name="android:paddingEnd">@dimen/padding_window</item>
+        <item name="android:paddingStart">@dimen/padding_window</item>
+        <item name="android:paddingTop">@dimen/padding_window</item>
+    </style>
+
+    <style name="Link">
+        <item name="android:textColor">?colorPrimary</item>
+        <item name="android:textColorLink">?colorPrimary</item>
+        <item name="android:textSize">@dimen/text_size_link_button</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:layout_marginVertical">8dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ListItemDivider">
+        <item name="android:background">?android:attr/dividerHorizontal</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="LoginLogo">
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_width">@dimen/login_logo_width</item>
+        <item name="android:layout_height">@dimen/login_logo_height</item>
+        <item name="android:src">@drawable/ic_action_play</item>
+    </style>
+
+    <style name="AppTheme.FitSystemWindow">
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="NetworkConnectionLostIndicator">
+        <item name="android:background">@color/connection_lost_background</item>
+        <item name="android:layout_height">@dimen/internet_connection_lost_indicator_height</item>
+    </style>
+
+    <style name="NetworkConnectionLostIndicator.TextView">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NetworkConnectionLostIndicator.ImageView">
+        <item name="android:layout_width">@dimen/internet_connection_lost_indicator_image_width
+        </item>
+        <item name="android:tint">@android:color/white</item>
+    </style>
+
+    <style name="DialogToolbar">
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:elevation">@dimen/search_dialog_toolbar_elevation</item>
+    </style>
+
+    <style name="SearchDialogSearchView">
+        <item name="android:layout_marginEnd">@dimen/search_dialog_search_view_margin</item>
+    </style>
+
+    <style name="SortingBottomSheetDialogTitle">
+        <item name="android:layout_width">@dimen/bottom_sheet_title_width</item>
+        <item name="android:layout_height">@dimen/bottom_sheet_title_height</item>
+        <item name="android:layout_marginBottom">@dimen/bottom_sheet_title_margin_bottom</item>
+        <item name="android:layout_marginStart">@dimen/bottom_sheet_title_margin_start</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/bottom_sheet_title_text_size</item>
+    </style>
+
+    <style name="SortingBottomSheetDialogImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/bottom_sheet_image_margin</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:src">@drawable/ic_action_check</item>
     </style>
 
 </resources>

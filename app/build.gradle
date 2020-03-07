@@ -3,8 +3,8 @@ apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
 apply plugin: "kotlin-kapt"
 apply plugin: 'androidx.navigation.safeargs.kotlin'
-apply plugin: 'io.fabric'
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'io.fabric'
+//apply plugin: 'com.google.gms.google-services'
 
 
 // Manifest version information

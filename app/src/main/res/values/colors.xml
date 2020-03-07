@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black_semi_trans">#99000000</color>
+    <color name="window_background">@android:color/white</color>
+    <color name="transparent">#00000000</color>
+    <color name="tint_white">#4DFFFFFF</color>
+    <color name="almostBlack">#282828</color>
+    <color name="item_selected_black">#595959</color>
+    <color name="report_detail_subtitle_text">#99000000</color>
+    <color name="report_detail_title_text">#DE000000</color>
+    <color name="text_color_footer">#DEA3A3A3</color>
+    <color name="toolbar_background">#212121</color>
+    <color name="connection_lost_background">#7f0000</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="colorBottomNavInactive">#737373</color>
 </resources>

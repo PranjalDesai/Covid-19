@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_button">0dp</dimen>
+    <dimen name="margin_card">8dp</dimen>
+    <dimen name="margin_container">0dp</dimen>
+    <dimen name="margin_form">0dp</dimen>
+    <dimen name="margin_window">0dp</dimen>
+    <dimen name="padding_button">0dp</dimen>
+    <dimen name="padding_card">10dp</dimen>
+    <dimen name="padding_container">0dp</dimen>
+    <dimen name="padding_form">0dp</dimen>
+    <dimen name="padding_none">0dp</dimen>
+    <dimen name="padding_window">0dp</dimen>
+
+    <dimen name="text_size_link_button">14sp</dimen>
+    <dimen name="letter_spacing_button">1.25dp</dimen>
+    <dimen name="padding_progress_view">25dp</dimen>
+    <dimen name="margin_progress_view">45dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+
+    <dimen name="internet_connection_lost_indicator_height">45dp</dimen>
+    <dimen name="internet_connection_lost_indicator_image_width">35dp</dimen>
+
+    <dimen name="login_logo_height">150dp</dimen>
+    <dimen name="login_logo_width">370dp</dimen>
+
+    <!-- SearchView Dialog-->
+    <dimen name="search_dialog_list_recycler_view_margin">16dp</dimen>
+    <dimen name="search_dialog_search_view_margin">16dp</dimen>
+    <dimen name="search_dialog_toolbar_elevation">8dp</dimen>
+
+    <!-- Sorting BottomSheet -->
+    <dimen name="bottom_sheet_image_margin">16dp</dimen>
+    <dimen name="bottom_sheet_title_height">48dp</dimen>
+    <dimen name="bottom_sheet_title_margin_bottom">16dp</dimen>
+    <dimen name="bottom_sheet_title_margin_start">70dp</dimen>
+    <dimen name="bottom_sheet_title_text_size">16sp</dimen>
+    <dimen name="bottom_sheet_title_width">0dp</dimen>
+    <dimen name="bottom_sheet_view_vertical_margin">10dp</dimen>
+
+</resources>

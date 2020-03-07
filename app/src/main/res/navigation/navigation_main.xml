@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/splashFragment">
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.pranjaldesai.coronavirustracker.ui.SplashFragment"
+        android:label="Splash">
+        <action
+            android:id="@+id/action_splashFragment_to_fragmentOne"
+            app:destination="@id/fragmentOne"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentOne"
+        android:name="com.pranjaldesai.coronavirustracker.ui.FragmentOne"
+        android:label="fragmentOne"></fragment>
+
+    <fragment
+        android:id="@+id/fragmentTwo"
+        android:name="com.pranjaldesai.coronavirustracker.ui.FragmentTwo"
+        android:label="fragmentTwo"></fragment>
+
+    <action
+        android:id="@+id/action_global_fragmentOne"
+        app:destination="@id/fragmentOne"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_fragmentTwo"
+        app:destination="@id/fragmentTwo"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_splashFragment"
+        app:destination="@id/splashFragment"
+        app:popUpToInclusive="true" />
+
+</navigation>

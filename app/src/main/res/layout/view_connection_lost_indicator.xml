@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/internet_connection_lost_indicator"
+    style="@style/NetworkConnectionLostIndicator"
+    android:layout_width="match_parent"
+    app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/nav_host_fragment">
+
+    <ImageView
+        android:id="@+id/internet_connection_lost_indicator_icon"
+        style="@style/NetworkConnectionLostIndicator.ImageView"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_network_disconnected"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/internet_connection_lost_indicator_message"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/internet_connection_lost_indicator_message"
+        style="@style/NetworkConnectionLostIndicator.TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/no_connection_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
