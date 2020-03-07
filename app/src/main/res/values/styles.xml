@@ -90,7 +90,7 @@
         <item name="android:scaleType">fitXY</item>
         <item name="android:layout_width">@dimen/login_logo_width</item>
         <item name="android:layout_height">@dimen/login_logo_height</item>
-        <item name="android:src">@drawable/ic_action_play</item>
+        <item name="android:src">@drawable/ic_action_close</item>
     </style>
 
     <style name="AppTheme.FitSystemWindow">

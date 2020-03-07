@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "276532148785",
+    "firebase_url": "https://covid-19-abb5f.firebaseio.com",
+    "project_id": "covid-19-abb5f",
+    "storage_bucket": "covid-19-abb5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276532148785:android:15caf1bbe45e220a6bf310",
+        "android_client_info": {
+          "package_name": "com.pranjaldesai.coronavirustracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276532148785-6mn57dmfnjoa2nelek4ckmn8ovbtv6ub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pranjaldesai.coronavirustracker",
+            "certificate_hash": "f5e9749c6a1a29e213c54c8c70ea0463d25a5b7b"
+          }
+        },
+        {
+          "client_id": "276532148785-gns7d0n3ks6o5h6c0eoupvmtfkbbl9eo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMzWSdKg5181oEnBQdkshFGWd61VnqMow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276532148785-gns7d0n3ks6o5h6c0eoupvmtfkbbl9eo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

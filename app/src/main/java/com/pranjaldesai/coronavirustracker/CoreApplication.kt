@@ -107,7 +107,7 @@ class CoreApplication : Application(), LifecycleObserver {
 
         @JvmStatic
         val moduleList = listOf(
-//            crashlyticsModule,
+            crashlyticsModule,
             networkingModule,
             picassoModule,
             dividerItemDecorationModule,
