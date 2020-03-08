@@ -46,9 +46,9 @@ class CountryAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryItemViewHolder {
-        val countryView =
+        val countriesView =
             ViewCountryListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CountryItemViewHolder(countryView, clickListener)
+        return CountryItemViewHolder(countriesView, clickListener)
     }
 
     override fun onBindViewHolder(holder: CountryItemViewHolder, position: Int) =

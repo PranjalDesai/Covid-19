@@ -7,8 +7,8 @@ interface IPrimaryFragment {
     fun navigateTo(destinationFragmentResId: Int): Int {
         return when (destinationFragmentResId) {
             R.id.fragmentOne -> R.id.action_global_fragmentOne
-            R.id.fragmentTwo -> R.id.action_global_fragmentTwo
-            else -> R.id.fragmentTwo
+            R.id.covidDetail -> R.id.action_global_fragmentTwo
+            else -> R.id.covidDetail
         }
     }
 

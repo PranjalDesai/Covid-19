@@ -12,7 +12,7 @@ class MainActivity : FMNavigationHostActivity(), IBottomNavMenuUpdater {
     override val connectivityMonitor: ConnectivityMonitor by inject()
     override val primaryFragmentResIdList: List<Int> = asList(
         R.id.fragmentOne,
-        R.id.fragmentTwo
+        R.id.covidDetail
     )
 
     override fun updateBottomNav(menu: Int) {

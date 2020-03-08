@@ -5,7 +5,7 @@
         android:icon="@drawable/ic_action_check"
         android:title="One" />
     <item
-        android:id="@+id/fragmentTwo"
+        android:id="@+id/covidDetail"
         android:icon="@drawable/ic_action_close"
         android:title="two" />
 </menu>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.pranjaldesai.coronavirustracker.data.viewholder.CityItemViewHolder.CityViewData" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/plays_item_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        android:background="@android:color/white"
+        app:cardElevation="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/cityName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{ data.title }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/recovered"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{ data.totalRecovered }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cityName"
+                tools:showIn="recovered" />
+
+            <TextView
+                android:id="@+id/death"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{ data.totalDeath }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recovered"
+                tools:showIn="death" />
+
+            <TextView
+                android:id="@+id/infected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{ data.totalInfected }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/death"
+                tools:showIn="infected" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

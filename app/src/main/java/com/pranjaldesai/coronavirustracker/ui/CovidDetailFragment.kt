@@ -3,6 +3,7 @@ package com.pranjaldesai.coronavirustracker.ui
 import android.graphics.Color
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.components.Legend
@@ -39,7 +40,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         )
     }
     private val sharedPreferences: CoreSharedPreferences by inject()
-    private val bottomNavOptionId: Int = R.id.fragmentTwo
+    private val bottomNavOptionId: Int = R.id.covidDetail
     private val databaseRef = FirebaseDatabase.getInstance().reference
     override val toolbar: Toolbar? by lazy { binding.toolbar }
     private val searchDialog: CountrySearchDialog by inject { parametersOf(context) }
@@ -50,7 +51,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     private val recyclerViewAdapter: CountryAdapter =
         CountryAdapter(ArrayList(), sharedPreferences.countrySelectedSortStyle) {
-
+            onCountryRecyclerViewClick(it)
         }
 
     private var covidStats: CovidStats? = null
@@ -152,6 +153,10 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         }
     }
 
+    private fun onCountryRecyclerViewClick(position: Int) {
+        navigateToCountryDetail(recyclerViewAdapter.getItemAtPosition(position))
+    }
+
     private fun showSortSheet() {
         sortDialog.show(sharedPreferences.countrySelectedSortStyle) { updatedSortStyle ->
             sharedPreferences.countrySelectedSortStyle = updatedSortStyle
@@ -184,7 +189,11 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
     }
 
     private fun navigateToCountryDetail(country: OverallCountry) {
-//        findNavController().navigate(PlaybooksListFragmentDirections.actionPlaybooksListFragmentToPlaybooksDetailFragment(playbook))
+        findNavController().navigate(
+            CovidDetailFragmentDirections.actionCovidDetailToCountryDetailFragment(
+                country
+            )
+        )
     }
 
     override fun onResume() {
@@ -196,6 +205,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
     override fun onPause() {
         super.onPause()
         sortDialog.dismiss()
+        searchDialog.dismiss()
         unsubscribeFromNavigationHost()
     }
 }
