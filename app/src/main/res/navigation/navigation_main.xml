@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/fragmentTwo"
-        android:name="com.pranjaldesai.coronavirustracker.ui.FragmentTwo"
+        android:name="com.pranjaldesai.coronavirustracker.ui.CovidDetailFragment"
         android:label="fragmentTwo"></fragment>
 
     <action

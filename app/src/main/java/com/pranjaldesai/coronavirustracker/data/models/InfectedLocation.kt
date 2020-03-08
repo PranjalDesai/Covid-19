@@ -8,8 +8,8 @@ data class InfectedLocation(
     val infectedCountry: String?,
     val infectedHistory: Map<String, String>?,
     val infectedProvince: String?,
-    val totalCount: Int?
+    val totalCount: Int = 0
 ) {
-    constructor() : this(null, null, null, null, null)
+    constructor() : this(null, null, null, null, 0)
 
 }

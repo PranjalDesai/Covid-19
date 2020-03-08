@@ -1,5 +1,6 @@
 package com.pranjaldesai.coronavirustracker.ui
 
+import android.text.method.ScrollingMovementMethod
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,6 +24,7 @@ class FragmentOne : CoreFragment<FragmentOneBinding>(), IPrimaryFragment {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val post = dataSnapshot.getValue(CovidStats::class.java)
                 binding.text.text = post.toString()
+                binding.text.movementMethod = ScrollingMovementMethod()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
