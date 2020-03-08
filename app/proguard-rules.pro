@@ -20,6 +20,10 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keepattributes Signature
+-keep class com.pranjaldesai.coronavirustracker.data.gson.** { *; }
+
+
+
 -keepclassmembers class com.pranjaldesai.coronavirustracker.data.models.models.** {
       *;
     }

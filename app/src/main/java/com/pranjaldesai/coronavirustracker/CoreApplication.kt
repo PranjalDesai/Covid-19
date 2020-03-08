@@ -9,9 +9,12 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDex
+import com.crashlytics.android.Crashlytics
 import com.pranjaldesai.coronavirustracker.di.*
 import com.pranjaldesai.coronavirustracker.extension.logTag
 import com.pranjaldesai.coronavirustracker.lifecycle.ApplicationState
+import io.fabric.sdk.android.Fabric
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidFileProperties
 import org.koin.android.ext.koin.androidLogger
@@ -21,7 +24,7 @@ import timber.log.Timber
 
 class CoreApplication : Application(), LifecycleObserver {
 
-    //    val crashlyticsKit: Crashlytics by inject()
+    val crashlyticsKit: Crashlytics by inject()
     private val useMultiDex: Boolean = true
     private var currentState: ApplicationState = ApplicationState.UNKNOWN
         private set(value) {
@@ -71,7 +74,7 @@ class CoreApplication : Application(), LifecycleObserver {
     }
 
     @CallSuper
-    protected open fun onApplicationStateChanged(state: ApplicationState) {
+    open fun onApplicationStateChanged(state: ApplicationState) {
         logApplicationStateChanged(state)
     }
 
@@ -90,7 +93,7 @@ class CoreApplication : Application(), LifecycleObserver {
     }
 
     private fun initializeCrashlytics() {
-//        Fabric.with(this, crashlyticsKit)
+        Fabric.with(this, crashlyticsKit)
     }
 
     companion object DI {
@@ -107,11 +110,12 @@ class CoreApplication : Application(), LifecycleObserver {
 
         @JvmStatic
         val moduleList = listOf(
+            gsonModule,
+            appModule,
             crashlyticsModule,
             networkingModule,
             picassoModule,
             dividerItemDecorationModule,
-            gsonModule,
             snackbarModule
         )
     }

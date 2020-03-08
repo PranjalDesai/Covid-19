@@ -1,6 +1,8 @@
 package com.pranjaldesai.coronavirustracker.ui
 
 import android.graphics.Color
+import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.components.Legend
@@ -12,27 +14,47 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.pranjaldesai.coronavirustracker.R
+import com.pranjaldesai.coronavirustracker.data.ListSortStyle
 import com.pranjaldesai.coronavirustracker.data.adapter.CountryAdapter
 import com.pranjaldesai.coronavirustracker.data.models.CovidStats
 import com.pranjaldesai.coronavirustracker.data.models.OverallCountry
+import com.pranjaldesai.coronavirustracker.data.preferences.CoreSharedPreferences
 import com.pranjaldesai.coronavirustracker.databinding.FragmentCovidDetailBinding
 import com.pranjaldesai.coronavirustracker.extension.LogExt
+import com.pranjaldesai.coronavirustracker.helper.generateCountrySortList
+import com.pranjaldesai.coronavirustracker.ui.dialog.CoreSortDialog
+import com.pranjaldesai.coronavirustracker.ui.dialog.CountrySearchDialog
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.IPrimaryFragment
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimaryFragment {
     override val layoutResourceId: Int = R.layout.fragment_covid_detail
 
+    private val sortDialog: CoreSortDialog by inject {
+        parametersOf(
+            context,
+            generateCountrySortList()
+        )
+    }
+    private val sharedPreferences: CoreSharedPreferences by inject()
     private val bottomNavOptionId: Int = R.id.fragmentTwo
     private val databaseRef = FirebaseDatabase.getInstance().reference
+    override val toolbar: Toolbar? by lazy { binding.toolbar }
+    private val searchDialog: CountrySearchDialog by inject { parametersOf(context) }
+    override val toolbarTitle: String by lazy { "Coronavirus Stats" }
+    override val menuResourceId: Int? = R.menu.toolbar_menu
     private val colors = listOf(Color.YELLOW, Color.RED, Color.GREEN)
     private val layoutManager: RecyclerView.LayoutManager =
         LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-    private val recyclerViewAdapter: CountryAdapter = CountryAdapter(ArrayList()) {
+    private val recyclerViewAdapter: CountryAdapter =
+        CountryAdapter(ArrayList(), sharedPreferences.countrySelectedSortStyle) {
 
-    }
+        }
 
     private var covidStats: CovidStats? = null
+    private var overallCountryList: ArrayList<OverallCountry>? = null
 
 
     override fun bindData() {
@@ -87,6 +109,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
                 )
             }
         }
+        overallCountryList = overallCountry
         recyclerViewAdapter.updateData(overallCountry)
 
     }
@@ -129,6 +152,41 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         }
     }
 
+    private fun showSortSheet() {
+        sortDialog.show(sharedPreferences.countrySelectedSortStyle) { updatedSortStyle ->
+            sharedPreferences.countrySelectedSortStyle = updatedSortStyle
+            updateAdapterBasedOnSort(updatedSortStyle)
+        }
+    }
+
+    private fun updateAdapterBasedOnSort(updatedSortStyle: ListSortStyle) {
+        recyclerViewAdapter.sort(updatedSortStyle)
+        binding.detailRecyclerview.invalidate()
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.sort_button -> {
+                showSortSheet()
+                true
+            }
+            R.id.search_button -> {
+                overallCountryList?.let { searchDialog.show(it, ::searchResultSelected) }
+                true
+            }
+            else -> super.onMenuItemClick(item)
+        }
+    }
+
+    private fun searchResultSelected(country: OverallCountry) {
+        searchDialog.dismiss()
+        navigateToCountryDetail(country)
+    }
+
+    private fun navigateToCountryDetail(country: OverallCountry) {
+//        findNavController().navigate(PlaybooksListFragmentDirections.actionPlaybooksListFragmentToPlaybooksDetailFragment(playbook))
+    }
+
     override fun onResume() {
         super.onResume()
         subscribeToNavigationHost()
@@ -137,6 +195,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
 
     override fun onPause() {
         super.onPause()
+        sortDialog.dismiss()
         unsubscribeFromNavigationHost()
     }
 }

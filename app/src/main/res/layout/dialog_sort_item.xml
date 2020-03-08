@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.pranjaldesai.coronavirustracker.data.viewholder.CoreSortListItemViewHolder.SortData" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sorting_item_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/sorting_title"
+            style="@style/SortingBottomSheetDialogTitle"
+            android:text="@{ data.title }"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/sorting_bottom_sheet_newest_text" />
+
+        <ImageView
+            android:id="@+id/sorting_check_mark"
+            style="@style/SortingBottomSheetDialogImage"
+            app:invisibleIfFalse="@{ data.invisibleIfFalse }"
+            app:layout_constraintBottom_toBottomOf="@+id/sorting_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
