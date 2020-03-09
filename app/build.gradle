@@ -106,6 +106,9 @@ dependencies {
     kapt "androidx.databinding:databinding-compiler:$gradle_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "com.google.android.gms:play-services-maps:$map_google_play_version"
+    implementation "com.google.android.gms:play-services-location:$map_google_play_version"
+    implementation "com.google.maps.android:android-maps-utils:$map_utility_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
     implementation("androidx.annotation:annotation:$annotation_version") { force = true }

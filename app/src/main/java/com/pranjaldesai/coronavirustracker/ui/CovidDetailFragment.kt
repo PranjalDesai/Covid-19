@@ -60,6 +60,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
 
     override fun bindData() {
         super.bindData()
+
         binding.detailRecyclerview.adapter = recyclerViewAdapter
         binding.detailRecyclerview.layoutManager = layoutManager
         val postListener = object : ValueEventListener {

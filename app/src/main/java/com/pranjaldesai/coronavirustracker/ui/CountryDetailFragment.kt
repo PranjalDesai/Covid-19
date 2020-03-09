@@ -32,7 +32,10 @@ class CountryDetailFragment(country: OverallCountry? = null) :
     override val recyclerView: RecyclerView by lazy { binding.expandableCityRecyclerview }
     override val toolbar: Toolbar? by lazy { binding.toolbar }
     override val toolbarTitle: String by lazy { this.country.countryName }
-    override val recyclerViewAdapter: CitiesAdapter = CitiesAdapter(ArrayList())
+    override val recyclerViewAdapter: CitiesAdapter = CitiesAdapter(ArrayList()) {
+        onCitySelected(it)
+    }
+
     override fun loadData() = loadCities()
 
     init {
@@ -78,6 +81,12 @@ class CountryDetailFragment(country: OverallCountry? = null) :
         }
         recyclerViewAdapter.updateData(cityList)
         hideProgressIndicator()
+    }
+
+    private fun onCitySelected(position: Int) {
+        val city = recyclerViewAdapter.getItemAtPosition(position)
+        city.isExpanded = !city.isExpanded
+        recyclerViewAdapter.updateItem(position, city)
     }
 
     private fun configureUpNavigation() =

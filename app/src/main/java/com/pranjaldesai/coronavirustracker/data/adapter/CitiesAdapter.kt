@@ -10,7 +10,7 @@ import kotlinx.coroutines.GlobalScope
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CitiesAdapter(data: ArrayList<OverallCity>) :
+class CitiesAdapter(data: ArrayList<OverallCity>, private val clickListener: (Int) -> Unit) :
     CoreDataAdapter<OverallCity, CityItemViewHolder>(data) {
 
     private var workingData: ArrayList<OverallCity> = ArrayList(data)
@@ -26,7 +26,7 @@ class CitiesAdapter(data: ArrayList<OverallCity>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityItemViewHolder {
         val cityView =
             ViewCityListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CityItemViewHolder(cityView)
+        return CityItemViewHolder(cityView, clickListener)
     }
 
     override fun onBindViewHolder(holder: CityItemViewHolder, position: Int) =
@@ -39,6 +39,12 @@ class CitiesAdapter(data: ArrayList<OverallCity>) :
         GlobalScope.launchOnMain {
             sort()
         }
+    }
+
+    fun updateItem(position: Int, updatedItem: OverallCity) {
+        workingData[position] = updatedItem
+        data[position] = updatedItem
+        notifyItemChanged(position)
     }
 
     private fun sort() {
