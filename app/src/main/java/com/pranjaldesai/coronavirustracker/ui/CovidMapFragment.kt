@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -82,18 +83,19 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
                         markerList.add(
                             googleMap?.addMarker(
                                 MarkerOptions().position(coordinates).title(locationTitle)
+                                    .snippet("Infected: ${it.totalCount}")
                                     .visible(false)
                             )
                         )
                         locationList.add(coordinates)
                     }
                 }
-                val gradient = Gradient(colors, startPoints, 50000)
+                val gradient = Gradient(colors, startPoints, 50)
                 val mProvider = HeatmapTileProvider.Builder()
                     .data(locationList)
                     .gradient(gradient)
                     .build()
-                mProvider.setRadius(250)
+                mProvider.setRadius(275)
                 tileOverlay =
                     googleMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
             }
@@ -140,6 +142,7 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
 
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(39.38, -97.92), 3.0F))
         googleMap?.isMyLocationEnabled = checkLocationPermission()
         googleMap?.uiSettings?.isMyLocationButtonEnabled = checkLocationPermission()
         googleMap?.setOnCameraMoveListener {
