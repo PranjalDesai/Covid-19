@@ -7,8 +7,11 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.data.models.OverallCity
 import com.pranjaldesai.coronavirustracker.databinding.ViewCityListItemBinding
+import com.pranjaldesai.coronavirustracker.helper.EMPTY_STRING
+import com.pranjaldesai.coronavirustracker.helper.EMPTY_TEXT
 
 class CityItemViewHolder(
     val binding: ViewCityListItemBinding,
@@ -19,8 +22,20 @@ class CityItemViewHolder(
         binding.data = CityViewData(city)
         setOnClickListener { listener(position) }
         binding.expandedView.visibility = if (city.isExpanded) {
+            binding.expandArrow.setImageDrawable(
+                resources.getDrawable(
+                    R.drawable.ic_action_arrow_up,
+                    context.theme
+                )
+            )
             View.VISIBLE
         } else {
+            binding.expandArrow.setImageDrawable(
+                resources.getDrawable(
+                    R.drawable.ic_action_arrow_down,
+                    context.theme
+                )
+            )
             View.GONE
         }
 
@@ -44,19 +59,19 @@ class CityItemViewHolder(
             yAxisDeathHistory.add(BarEntry(position.toFloat(), recoveredOnDate))
             yAxisRecoveredHistory.add(BarEntry(position.toFloat(), deathOnDate))
         }
-        val barDataSetInfected = BarDataSet(yAxisInfectedHistory, "")
+        val barDataSetInfected = BarDataSet(yAxisInfectedHistory, EMPTY_STRING)
         barDataSetInfected.setColors(Color.parseColor("#FFC154"))
-        barDataSetInfected.label = "Infected"
+        barDataSetInfected.label = INFECTED_LABEL
         barDataSetInfected.setDrawValues(false)
         barDataSetInfected.valueTextColor = textColor
-        val barDataSetDeath = BarDataSet(yAxisDeathHistory, "")
+        val barDataSetDeath = BarDataSet(yAxisDeathHistory, EMPTY_STRING)
         barDataSetDeath.setColors(Color.parseColor("#EC6B56"))
-        barDataSetDeath.label = "Death"
+        barDataSetDeath.label = DEATH_LABEL
         barDataSetDeath.setDrawValues(false)
         barDataSetDeath.valueTextColor = textColor
-        val barDataSetRecovered = BarDataSet(yAxisRecoveredHistory, "")
+        val barDataSetRecovered = BarDataSet(yAxisRecoveredHistory, EMPTY_STRING)
         barDataSetRecovered.setColors(Color.parseColor("#47B39C"))
-        barDataSetRecovered.label = "Recovered"
+        barDataSetRecovered.label = RECOVERED_LABEL
         barDataSetRecovered.setDrawValues(false)
         barDataSetRecovered.valueTextColor = textColor
         val barData = BarData(barDataSetInfected, barDataSetDeath, barDataSetRecovered)
@@ -90,16 +105,22 @@ class CityItemViewHolder(
 
     class CityViewData(private val overallCity: OverallCity) {
         val title: String = generateTitle(overallCity.infectedProvince)
-        val totalInfected: String = overallCity.totalInfectedCount.toString()
-        val totalDeath: String = overallCity.totalDeathCount.toString()
-        val totalRecovered: String = overallCity.totalRecoveredCount.toString()
+        val totalInfected: String = "$INFECTED_LABEL: ${overallCity.totalInfectedCount}"
+        val totalDeath: String = "$DEATH_LABEL: ${overallCity.totalDeathCount}"
+        val totalRecovered: String = "$RECOVERED_LABEL: ${overallCity.totalRecoveredCount}"
 
         private fun generateTitle(cityName: String?): String {
-            return if (cityName != null && cityName != "empty") {
+            return if (cityName != null && cityName != EMPTY_TEXT) {
                 cityName
             } else {
                 overallCity.countryName
             }
         }
+    }
+
+    companion object {
+        const val INFECTED_LABEL = "Infected"
+        const val DEATH_LABEL = "Death"
+        const val RECOVERED_LABEL = "Recovered"
     }
 }

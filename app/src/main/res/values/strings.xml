@@ -25,6 +25,7 @@
     <string name="covid_map_toolbar_title">Coronavirus Map</string>
     <string name="covid_detail_toolbar_title">Coronavirus Stats</string>
     <string name="covid_detail_pie_chart_title">Overall Statistic</string>
+    <string name="city_list_item_infected_history_title">Infected History</string>
 
 
 </resources>
