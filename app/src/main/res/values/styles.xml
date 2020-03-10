@@ -130,7 +130,7 @@
 
     <style name="DialogToolbar">
         <item name="android:fontFamily">@font/roboto</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:background">@color/background_color</item>
         <item name="android:elevation">@dimen/search_dialog_toolbar_elevation</item>
     </style>
 
@@ -144,7 +144,7 @@
         <item name="android:layout_marginBottom">@dimen/bottom_sheet_title_margin_bottom</item>
         <item name="android:layout_marginStart">@dimen/bottom_sheet_title_margin_start</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">@dimen/bottom_sheet_title_text_size</item>
     </style>
 

@@ -10,4 +10,5 @@
     <color name="colorAccentLight">#66ffa6</color>
     <color name="colorMapHighIntensity">#7f0000</color>
     <color name="colorMapLowIntensity">#f05545</color>
+    <color name="colorBottomSheetBackground">#424242</color>
 </resources>

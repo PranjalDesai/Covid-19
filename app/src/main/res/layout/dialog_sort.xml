@@ -6,14 +6,13 @@
         android:id="@+id/sorting_parent_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/bottom_sheet_view_vertical_margin"
-        android:background="@android:color/white"
         app:behavior_hideable="true"
         app:behavior_peekHeight="0dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sort_recycler_view"
+            android:layout_marginVertical="@dimen/bottom_sheet_view_vertical_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"

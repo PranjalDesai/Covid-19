@@ -10,6 +10,7 @@
     <color name="colorMapHighIntensity">#7f0000</color>
     <color name="colorMapLowIntensity">#f05545</color>
     <color name="text_color">@android:color/black</color>
+    <color name="colorBottomSheetBackground">@android:color/white</color>
 
 
     <color name="black_semi_trans">#99000000</color>

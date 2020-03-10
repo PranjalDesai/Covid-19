@@ -17,8 +17,14 @@ class CountryItemViewHolder(
 
     class CountryViewData(private val overallCountry: OverallCountry) {
         val title: String = overallCountry.countryName
-        val totalInfected: String = overallCountry.totalInfected.toString()
-        val totalDeath: String = overallCountry.totalDeath.toString()
-        val totalRecovered: String = overallCountry.totalRecovered.toString()
+        val totalInfected: String = "$INFECTED_LABEL ${overallCountry.totalInfected}"
+        val totalDeath: String = "$DEATH_LABEL ${overallCountry.totalDeath}"
+        val totalRecovered: String = "$RECOVERED_LABEL ${overallCountry.totalRecovered}"
+    }
+
+    companion object {
+        const val INFECTED_LABEL = "Infected:"
+        const val DEATH_LABEL = "Death:"
+        const val RECOVERED_LABEL = "Recovered:"
     }
 }
