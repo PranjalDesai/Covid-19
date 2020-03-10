@@ -79,7 +79,7 @@ android {
             minifyEnabled true
             shrinkResources true
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "$rootProject.rootDir/proguard-rules.pro", "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "$rootProject.rootDir/proguard-rules.pro", "proguard-rules.pro"
         }
     }
 
