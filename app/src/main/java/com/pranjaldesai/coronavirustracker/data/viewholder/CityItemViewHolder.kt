@@ -52,31 +52,21 @@ class CityItemViewHolder(
         val yAxisDeathHistory = ArrayList<BarEntry>()
         val yAxisRecoveredHistory = ArrayList<BarEntry>()
         sortedKeys.forEachIndexed { position, specificDate ->
-            val infectedOnDate = city.infectedHistory?.get(specificDate)?.toFloat() ?: 0f
-            val recoveredOnDate = city.recoveredHistory?.get(specificDate)?.toFloat() ?: 0f
-            val deathOnDate = city.deathHistory?.get(specificDate)?.toFloat() ?: 0f
+            val infectedOnDate = city.infectedHistory?.get(specificDate)?.toFloat() ?: DEFAULT_FLOAT
+            val recoveredOnDate =
+                city.recoveredHistory?.get(specificDate)?.toFloat() ?: DEFAULT_FLOAT
+            val deathOnDate = city.deathHistory?.get(specificDate)?.toFloat() ?: DEFAULT_FLOAT
             yAxisInfectedHistory.add(BarEntry(position.toFloat(), infectedOnDate))
-            yAxisDeathHistory.add(BarEntry(position.toFloat(), recoveredOnDate))
-            yAxisRecoveredHistory.add(BarEntry(position.toFloat(), deathOnDate))
+            yAxisDeathHistory.add(BarEntry(position.toFloat(), deathOnDate))
+            yAxisRecoveredHistory.add(BarEntry(position.toFloat(), recoveredOnDate))
         }
-        val barDataSetInfected = BarDataSet(yAxisInfectedHistory, EMPTY_STRING)
-        barDataSetInfected.setColors(Color.parseColor("#FFC154"))
-        barDataSetInfected.label = INFECTED_LABEL
-        barDataSetInfected.setDrawValues(false)
-        barDataSetInfected.valueTextColor = textColor
-        val barDataSetDeath = BarDataSet(yAxisDeathHistory, EMPTY_STRING)
-        barDataSetDeath.setColors(Color.parseColor("#EC6B56"))
-        barDataSetDeath.label = DEATH_LABEL
-        barDataSetDeath.setDrawValues(false)
-        barDataSetDeath.valueTextColor = textColor
-        val barDataSetRecovered = BarDataSet(yAxisRecoveredHistory, EMPTY_STRING)
-        barDataSetRecovered.setColors(Color.parseColor("#47B39C"))
-        barDataSetRecovered.label = RECOVERED_LABEL
-        barDataSetRecovered.setDrawValues(false)
-        barDataSetRecovered.valueTextColor = textColor
-        val barData = BarData(barDataSetInfected, barDataSetDeath, barDataSetRecovered)
         with(binding.stackedBarChart) {
-            data = barData
+            data = generateBarData(
+                yAxisInfectedHistory,
+                textColor,
+                yAxisDeathHistory,
+                yAxisRecoveredHistory
+            )
             description.isEnabled = false
             this.xAxis.valueFormatter = IndexAxisValueFormatter(xAxis)
             this.xAxis.setCenterAxisLabels(true)
@@ -84,15 +74,44 @@ class CityItemViewHolder(
             this.axisLeft.textColor = textColor
             this.legend.textColor = textColor
             setBorderColor(textColor)
-            setVisibleXRangeMaximum(3F)
-            barData.barWidth = 0.30f
-            groupBars(0f, 0.04f, 0.02f)
+            setVisibleXRangeMaximum(X_RANGE_MINIMUM)
+            barData.barWidth = BAR_WIDTH
+            groupBars(DEFAULT_FLOAT, GROUP_SPACE, BAR_SPACE)
             data.isHighlightEnabled = false
             axisRight.isEnabled = false
             setPinchZoom(false)
             setFitBars(true)
             invalidate()
         }
+    }
+
+    private fun generateBarData(
+        yAxisInfectedHistory: ArrayList<BarEntry>,
+        textColor: Int,
+        yAxisDeathHistory: ArrayList<BarEntry>,
+        yAxisRecoveredHistory: ArrayList<BarEntry>
+    ): BarData {
+        val barDataSetInfected =
+            generateBarDataSet(yAxisInfectedHistory, textColor, colors[0], INFECTED_LABEL)
+        val barDataSetRecovered =
+            generateBarDataSet(yAxisRecoveredHistory, textColor, colors[1], RECOVERED_LABEL)
+        val barDataSetDeath =
+            generateBarDataSet(yAxisDeathHistory, textColor, colors[2], DEATH_LABEL)
+        return BarData(barDataSetInfected, barDataSetRecovered, barDataSetDeath)
+    }
+
+    private fun generateBarDataSet(
+        yAxisHistory: ArrayList<BarEntry>,
+        textColor: Int,
+        color: Int,
+        label: String
+    ): BarDataSet {
+        val barDataSet = BarDataSet(yAxisHistory, EMPTY_STRING)
+        barDataSet.setColors(color)
+        barDataSet.label = label
+        barDataSet.setDrawValues(false)
+        barDataSet.valueTextColor = textColor
+        return barDataSet
     }
 
     private fun generateChartTextColor(isDarkMode: Boolean): Int {
@@ -122,5 +141,15 @@ class CityItemViewHolder(
         const val INFECTED_LABEL = "Infected"
         const val DEATH_LABEL = "Death"
         const val RECOVERED_LABEL = "Recovered"
+        const val X_RANGE_MINIMUM = 3f
+        const val BAR_WIDTH = 0.30f
+        const val DEFAULT_FLOAT = 0f
+        const val GROUP_SPACE = 0.4f
+        const val BAR_SPACE = 0.02f
+        val colors = listOf(
+            Color.parseColor("#FFC154"),
+            Color.parseColor("#47B39C"),
+            Color.parseColor("#EC6B56")
+        )
     }
 }

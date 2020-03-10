@@ -12,12 +12,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/plays_item_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="8dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="8dp">
+        style="@style/DefaultCardView"
+        app:cardCornerRadius="@dimen/default_cardview_corner_radius"
+        app:cardElevation="@dimen/default_cardview_elevation">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,8 +24,8 @@
                 android:id="@+id/details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp"
-                app:cardElevation="4dp"
+                app:cardCornerRadius="@dimen/default_detail_cardview_corner_radius"
+                app:cardElevation="@dimen/default_detail_cardview_elevation"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -49,34 +46,18 @@
 
                     <TextView
                         android:id="@+id/cityName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:text="@{ data.title }"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginVertical="8dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textColor="@color/colorPrimaryLight"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
+                        style="@style/ViewHolderTitle"
                         app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Infected: 1000" />
+                        tools:text="Illinois" />
 
                     <TextView
                         android:id="@+id/infected"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginVertical="8dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
                         android:text="@{ data.totalInfected }"
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp"
-                        android:textStyle="normal"
+                        style="@style/ViewHolderSubText"
                         app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -84,40 +65,24 @@
                         tools:text="Infected: 1000" />
 
                     <TextView
-                        android:id="@+id/death"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginVertical="8dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp"
-                        android:textStyle="normal"
-                        android:text="@{ data.totalDeath }"
-                        app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
+                        android:id="@+id/recovered"
+                        style="@style/ViewHolderSubText"
+                        android:text="@{ data.totalRecovered }"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
                         app:layout_constraintTop_toBottomOf="@id/infected"
-                        tools:text="Death: 1000" />
+                        tools:text="Recovered: 1000" />
 
                     <TextView
-                        android:id="@+id/recovered"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginVertical="8dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="@{ data.totalRecovered }"
-                        android:textColor="@color/text_color"
-                        android:textSize="16sp"
-                        android:textStyle="normal"
+                        android:id="@+id/death"
+                        style="@style/ViewHolderSubText"
+                        android:text="@{ data.totalDeath }"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
-                        app:layout_constraintTop_toBottomOf="@id/death"
-                        tools:text="Recovered: 1000" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/recovered"
+                        tools:text="Death: 1000" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -136,16 +101,7 @@
 
                 <TextView
                     android:id="@+id/infected_history_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="@string/city_list_item_infected_history_title"
-                    android:textColor="@color/text_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    style="@style/ViewHolderSubTextTitle"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -153,9 +109,9 @@
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/stackedBarChart"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="@dimen/bar_char_height"
+                    android:layout_marginTop="@dimen/bar_char_margin_top"
+                    android:layout_marginBottom="@dimen/bar_char_margin_bottom"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"

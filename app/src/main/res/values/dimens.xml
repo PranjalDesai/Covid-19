@@ -42,6 +42,36 @@
     <dimen name="bottom_sheet_title_width">0dp</dimen>
     <dimen name="bottom_sheet_view_vertical_margin">10dp</dimen>
 
+    <!-- RecyclerView -->
+    <dimen name="city_recyclerview_margin_top">8dp</dimen>
+    <dimen name="country_recyclerview_margin_top">16dp</dimen>
+
     <!-- Pie Chart -->
+    <dimen name="covid_pie_chart_title_text">22sp</dimen>
+    <dimen name="covid_pie_chart_title_margin_top">16dp</dimen>
+    <dimen name="covid_pie_chart_title_margin_horizontal">16dp</dimen>
+    <dimen name="covid_pie_chart_margin_vertical">8dp</dimen>
+    <dimen name="covid_pie_chart_min_height">300dp</dimen>
+
+    <!-- Card View -->
+    <dimen name="default_cardview_corner_radius">4dp</dimen>
+    <dimen name="default_cardview_elevation">8dp</dimen>
+    <dimen name="default_cardview_margin_horizontal">16dp</dimen>
+    <dimen name="default_cardview_margin_vertical">8dp</dimen>
+    <dimen name="default_detail_cardview_corner_radius">4dp</dimen>
+    <dimen name="default_detail_cardview_elevation">4dp</dimen>
+    <dimen name="bar_char_height">240dp</dimen>
+    <dimen name="bar_char_margin_top">16dp</dimen>
+    <dimen name="bar_char_margin_bottom">8dp</dimen>
+
+    <!-- View Holder -->
+
+    <dimen name="default_view_holder_text_margin_horizontal">16dp</dimen>
+    <dimen name="default_view_holder_text_margin_vertical">8dp</dimen>
+    <dimen name="default_view_holder_title_size">20sp</dimen>
+    <dimen name="default_view_holder_sub_text_size">16sp</dimen>
+    <dimen name="default_view_holder_sub_text_title_margin_horizontal">16dp</dimen>
+    <dimen name="default_view_holder_sub_text_title_margin_top">16dp</dimen>
+    <dimen name="default_view_holder_sub_text_title_size">16sp</dimen>
 
 </resources>

@@ -164,4 +164,73 @@
         <item name="android:src">@drawable/ic_action_check</item>
     </style>
 
+    <style name="ChartTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">
+            @dimen/covid_pie_chart_title_margin_horizontal
+        </item>
+        <item name="android:layout_marginTop">@dimen/covid_pie_chart_title_margin_top</item>
+        <item name="android:text">@string/covid_detail_pie_chart_title</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/covid_pie_chart_title_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PieChart">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">@dimen/covid_pie_chart_margin_vertical</item>
+        <item name="android:minHeight">@dimen/covid_pie_chart_min_height</item>
+    </style>
+
+    <style name="DefaultCardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">@dimen/default_cardview_margin_horizontal
+        </item>
+        <item name="android:layout_marginVertical">@dimen/default_cardview_margin_vertical</item>
+    </style>
+
+    <style name="ViewHolderText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">
+            @dimen/default_view_holder_text_margin_horizontal
+        </item>
+        <item name="android:layout_marginVertical">@dimen/default_view_holder_text_margin_vertical
+        </item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="ViewHolderTitle" parent="ViewHolderText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textColor">@color/colorPrimaryLight</item>
+        <item name="android:textSize">@dimen/default_view_holder_title_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ViewHolderSubText" parent="ViewHolderText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/default_view_holder_sub_text_size</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ViewHolderSubTextTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginHorizontal">
+            @dimen/default_view_holder_sub_text_title_margin_horizontal
+        </item>
+        <item name="android:layout_marginTop">@dimen/default_view_holder_sub_text_title_margin_top
+        </item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/default_view_holder_sub_text_title_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">@string/city_list_item_infected_history_title</item>
+    </style>
+
 </resources>

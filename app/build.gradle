@@ -8,10 +8,10 @@ apply plugin: 'io.fabric'
 
 
 // Manifest version information
-def versionMajor = 0 // Don't increment unless told to
+def versionMajor = 1 // Don't increment unless told to
 def versionMinor = 0 // Increment by one after the patch version rolls over max threshold
 def versionPatch = 0 // Increment for every new release
-def versionBuild = 1 // Increment for each additional rebuild needed for the release (set to zero for the first build of a new release)
+def versionBuild = 0 // Increment for each additional rebuild needed for the release (set to zero for the first build of a new release)
 
 // generate a generic version code for each combo of above values
 def versionCodeValue = (versionMajor * 1000) + (versionMinor * 100) + (versionPatch * 10) + versionBuild

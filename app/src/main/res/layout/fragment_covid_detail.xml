@@ -49,24 +49,14 @@
 
                             <TextView
                                 android:id="@+id/chart_title"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="16dp"
-                                android:layout_marginTop="16dp"
-                                android:text="@string/covid_detail_pie_chart_title"
-                                android:textColor="@color/text_color"
-                                android:textSize="22sp"
-                                android:textStyle="bold"
+                                style="@style/ChartTitle"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <com.github.mikephil.charting.charts.PieChart
                                 android:id="@+id/pie_chart"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginVertical="8dp"
-                                android:minHeight="300dp"
+                                style="@style/PieChart"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/chart_title" />
@@ -80,7 +70,7 @@
                         android:id="@+id/detail_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/country_recyclerview_margin_top"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
