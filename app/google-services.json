@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "276532148785-tsaqs3v75am4rcn22c8ssrsbrtdpnah5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pranjaldesai.coronavirustracker",
+            "certificate_hash": "1ba0a19034d61c7cbae42a7dc0a4962dc72a8dc5"
+          }
+        },
+        {
           "client_id": "276532148785-6mn57dmfnjoa2nelek4ckmn8ovbtv6ub.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

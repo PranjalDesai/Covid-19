@@ -25,6 +25,7 @@
 -dontwarn org.xmlpull.**
 -dontwarn sun.misc.**
 
+-keep class com.pranjaldesai.coronavirustracker.data.models.** { *; }
 -keep class !android.support.v7.internal.view.menu.**, android.support.** { *; }
 -keep class * extends android.app.Activity
 -keep class * extends android.app.Application

@@ -26,6 +26,7 @@ import com.pranjaldesai.coronavirustracker.ui.shared.CoreFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.IPrimaryFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragment,
     OnMapReadyCallback, ICovidView {
@@ -147,13 +148,17 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
             }
         }
         val gradient = Gradient(heatMapColors, heatStartPoints, GRADIENT_MAP_SIZE)
-        val mProvider = HeatmapTileProvider.Builder()
-            .data(viewModel.generateCoordinatesList())
-            .gradient(gradient)
-            .build()
-        mProvider.setRadius(HEAT_MAP_RADIUS)
-        tileOverlay =
-            googleMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
+        val coordinates = viewModel.generateCoordinatesList()
+        Timber.i("Pranjal $coordinates")
+        if (coordinates.isNotEmpty()) {
+            val mProvider = HeatmapTileProvider.Builder()
+                .data(viewModel.generateCoordinatesList())
+                .gradient(gradient)
+                .build()
+            mProvider.setRadius(HEAT_MAP_RADIUS)
+            tileOverlay =
+                googleMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
+        }
     }
 
     private fun checkLocationPermission(): Boolean {
