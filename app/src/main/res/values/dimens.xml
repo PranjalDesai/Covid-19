@@ -38,4 +38,6 @@
     <dimen name="bottom_sheet_title_width">0dp</dimen>
     <dimen name="bottom_sheet_view_vertical_margin">10dp</dimen>
 
+    <!-- Pie Chart -->
+
 </resources>

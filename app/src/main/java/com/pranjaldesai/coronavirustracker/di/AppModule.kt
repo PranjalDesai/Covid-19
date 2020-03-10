@@ -4,9 +4,13 @@ import android.content.Context
 import com.google.gson.GsonBuilder
 import com.pranjaldesai.coronavirustracker.data.models.SortItem
 import com.pranjaldesai.coronavirustracker.data.preferences.CoreSharedPreferences
+import com.pranjaldesai.coronavirustracker.ui.CountryDetailViewModel
+import com.pranjaldesai.coronavirustracker.ui.CovidDetailViewModel
+import com.pranjaldesai.coronavirustracker.ui.CovidMapViewModel
 import com.pranjaldesai.coronavirustracker.ui.dialog.CoreSortDialog
 import com.pranjaldesai.coronavirustracker.ui.dialog.CountrySearchDialog
 import org.koin.android.ext.koin.androidApplication
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module(override = true) {
@@ -19,4 +23,7 @@ val appModule = module(override = true) {
         )
     }
     factory { (context: Context) -> CountrySearchDialog(context = context) }
+    viewModel { CovidMapViewModel() }
+    viewModel { CovidDetailViewModel() }
+    viewModel { CountryDetailViewModel() }
 }

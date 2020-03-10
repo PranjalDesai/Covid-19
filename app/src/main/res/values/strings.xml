@@ -21,5 +21,9 @@
     <string name="bottom_navigation_map_label">Map</string>
     <string name="bottom_navigation_detail_label">Detail</string>
 
+    <!-- Title -->
+    <string name="covid_map_toolbar_title">Coronavirus Map</string>
+    <string name="covid_detail_toolbar_title">Coronavirus Stats</string>
+
 
 </resources>

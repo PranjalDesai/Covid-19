@@ -3,13 +3,10 @@ package com.pranjaldesai.coronavirustracker.ui
 import android.graphics.Color
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -21,136 +18,112 @@ import com.pranjaldesai.coronavirustracker.data.models.CovidStats
 import com.pranjaldesai.coronavirustracker.data.models.OverallCountry
 import com.pranjaldesai.coronavirustracker.data.preferences.CoreSharedPreferences
 import com.pranjaldesai.coronavirustracker.databinding.FragmentCovidDetailBinding
-import com.pranjaldesai.coronavirustracker.extension.LogExt
+import com.pranjaldesai.coronavirustracker.extension.LogExt.loge
 import com.pranjaldesai.coronavirustracker.helper.generateCountrySortList
 import com.pranjaldesai.coronavirustracker.ui.dialog.CoreSortDialog
 import com.pranjaldesai.coronavirustracker.ui.dialog.CountrySearchDialog
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.IPrimaryFragment
+import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimaryFragment {
+class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimaryFragment,
+    ICovidView {
     override val layoutResourceId: Int = R.layout.fragment_covid_detail
+    override val lifecycleOwner: LifecycleOwner by lazy { this }
+    override val toolbar: Toolbar? by lazy { binding.toolbar }
+    override val toolbarTitle: String by lazy { getString(R.string.covid_detail_toolbar_title) }
+    override val menuResourceId: Int? = R.menu.toolbar_menu
 
-    private val sortDialog: CoreSortDialog by inject {
-        parametersOf(
-            context,
-            generateCountrySortList()
-        )
-    }
+    private val viewModel: CovidDetailViewModel by viewModel()
     private val sharedPreferences: CoreSharedPreferences by inject()
+    private val searchDialog: CountrySearchDialog by inject { parametersOf(context) }
     private val bottomNavOptionId: Int = R.id.covidDetail
     private val databaseRef = FirebaseDatabase.getInstance().reference
-    override val toolbar: Toolbar? by lazy { binding.toolbar }
-    private val searchDialog: CountrySearchDialog by inject { parametersOf(context) }
-    override val toolbarTitle: String by lazy { "Coronavirus Stats" }
-    override val menuResourceId: Int? = R.menu.toolbar_menu
-    private val colors = listOf(Color.YELLOW, Color.RED, Color.GREEN)
+    private val overallCountryList = ArrayList<OverallCountry>()
     private val layoutManager: RecyclerView.LayoutManager =
         LinearLayoutManager(context, RecyclerView.VERTICAL, false)
     private val recyclerViewAdapter: CountryAdapter =
         CountryAdapter(ArrayList(), sharedPreferences.countrySelectedSortStyle) {
             onCountryRecyclerViewClick(it)
         }
-
-    private var covidStats: CovidStats? = null
-    private var overallCountryList: ArrayList<OverallCountry>? = null
-
+    private val sortDialog: CoreSortDialog by inject {
+        parametersOf(
+            context,
+            generateCountrySortList()
+        )
+    }
 
     override fun bindData() {
         super.bindData()
-
+        viewModel.subscribe(this, lifecycleOwner)
         binding.detailRecyclerview.adapter = recyclerViewAdapter
         binding.detailRecyclerview.layoutManager = layoutManager
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                covidStats = dataSnapshot.getValue(CovidStats::class.java)
-                covidStats?.let {
-                    updatePieChart(it)
-                    updateCountryAdapter(it)
-                }
-
+                val covidStats = dataSnapshot.getValue(CovidStats::class.java)
+                viewModel.covidStats = covidStats
+                updatePieChart()
+                updateCountryAdapter()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                LogExt.loge(databaseError.toException())
+                loge(databaseError.toException())
             }
         }
         databaseRef.addValueEventListener(postListener)
     }
 
-    private fun updateCountryAdapter(covidStats: CovidStats) {
-        val overallCountry = ArrayList<OverallCountry>()
-        val groupedConfirmed =
-            covidStats.confirmed?.infectedLocations?.groupBy { location -> location.infectedCountry }
-        val groupedDeath =
-            covidStats.death?.infectedLocations?.groupBy { location -> location.infectedCountry }
-        val groupedRecovered =
-            covidStats.recovered?.infectedLocations?.groupBy { location -> location.infectedCountry }
-        groupedConfirmed?.keys?.forEach { key ->
-            var totalInfected = 0
-            var totalRecovered = 0
-            var totalDeath = 0
-            groupedConfirmed[key]?.forEach { location -> totalInfected += location.totalCount }
-            groupedDeath?.get(key)?.forEach { location -> totalDeath += location.totalCount }
-            groupedRecovered?.get(key)
-                ?.forEach { location -> totalRecovered += location.totalCount }
+    override fun onResume() {
+        super.onResume()
+        subscribeToNavigationHost()
+        updateBottomNavigationSelection(bottomNavOptionId)
+    }
 
-            key?.let { it1 ->
-                overallCountry.add(
-                    OverallCountry(
-                        it1,
-                        totalInfected,
-                        totalDeath,
-                        totalRecovered,
-                        groupedConfirmed[key],
-                        groupedDeath?.get(key),
-                        groupedRecovered?.get(key)
-                    )
-                )
+    override fun onPause() {
+        super.onPause()
+        sortDialog.dismiss()
+        searchDialog.dismiss()
+        unsubscribeFromNavigationHost()
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.sort_button -> {
+                showSortSheet()
+                true
             }
+            R.id.search_button -> {
+                searchDialog.show(overallCountryList, ::searchResultSelected)
+                true
+            }
+            else -> super.onMenuItemClick(item)
         }
-        overallCountryList = overallCountry
-        recyclerViewAdapter.updateData(overallCountry)
+    }
+
+    private fun updateCountryAdapter() {
+        overallCountryList.clear()
+        overallCountryList.addAll(viewModel.generateOverallCountryList())
+        recyclerViewAdapter.updateData(overallCountryList)
 
     }
 
-    private fun updatePieChart(covidStats: CovidStats) {
-        val chartData = ArrayList<PieEntry>()
-        val confirmedCases = covidStats.confirmed?.overallTotalCount ?: 0
-        val deathCases = covidStats.death?.overallTotalCount ?: 0
-        val recoveredCases = covidStats.recovered?.overallTotalCount ?: 0
-        val description = binding.pieChart.description
-        description.isEnabled = false
-        chartData.add(PieEntry(confirmedCases.toFloat(), "Infected Cases"))
-        chartData.add(PieEntry(deathCases.toFloat(), "Death Cases"))
-        chartData.add(PieEntry(recoveredCases.toFloat(), "Recovered Cases"))
-
-        val pieDataSet = PieDataSet(chartData, "")
-        pieDataSet.colors = colors
-        pieDataSet.valueTextColor = Color.BLACK
-        pieDataSet.valueTextSize = 16.toFloat()
-        pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        pieDataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+    private fun updatePieChart() {
         with(binding.pieChart) {
-            data = PieData((pieDataSet))
-            holeRadius = 25f
-            transparentCircleRadius = 15f
-            legend.isWordWrapEnabled = true
-            legend.textColor = Color.BLACK
-            legend.textSize = 10f
-            legend.direction = Legend.LegendDirection.LEFT_TO_RIGHT
-            setEntryLabelColor(Color.BLACK)
-            setEntryLabelTextSize(14f)
+            data = viewModel.generatePieData()
+            description.isEnabled = false
+            legend.isEnabled = false
+            extraLeftOffset = EXTRA_OFFSET
+            extraBottomOffset = EXTRA_OFFSET
+            extraRightOffset = EXTRA_OFFSET
+            extraTopOffset = EXTRA_OFFSET
+            holeRadius = HOLE_RADIUS
+            setEntryLabelTextSize(ENTRY_LABEL_TEXT_SIZE)
             setUsePercentValues(false)
-            extraLeftOffset = 10f
-            extraBottomOffset = 10f
-            extraRightOffset = 10f
-            extraTopOffset = 10f
-            offsetLeftAndRight(10)
-            this.description = description
-            animateY(1000)
+            setEntryLabelColor(Color.BLACK)
+            animateXY(PIE_CHART_ANIMATION, PIE_CHART_ANIMATION)
         }
     }
 
@@ -170,20 +143,6 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         binding.detailRecyclerview.invalidate()
     }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            R.id.sort_button -> {
-                showSortSheet()
-                true
-            }
-            R.id.search_button -> {
-                overallCountryList?.let { searchDialog.show(it, ::searchResultSelected) }
-                true
-            }
-            else -> super.onMenuItemClick(item)
-        }
-    }
-
     private fun searchResultSelected(country: OverallCountry) {
         searchDialog.dismiss()
         navigateToCountryDetail(country)
@@ -191,22 +150,14 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
 
     private fun navigateToCountryDetail(country: OverallCountry) {
         findNavController().navigate(
-            CovidDetailFragmentDirections.actionCovidDetailToCountryDetailFragment(
-                country
-            )
+            CovidDetailFragmentDirections.actionCovidDetailToCountryDetailFragment(country)
         )
     }
 
-    override fun onResume() {
-        super.onResume()
-        subscribeToNavigationHost()
-        updateBottomNavigationSelection(bottomNavOptionId)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        sortDialog.dismiss()
-        searchDialog.dismiss()
-        unsubscribeFromNavigationHost()
+    companion object {
+        const val EXTRA_OFFSET = 10f
+        const val HOLE_RADIUS = 35f
+        const val PIE_CHART_ANIMATION = 2000
+        const val ENTRY_LABEL_TEXT_SIZE = 14f
     }
 }

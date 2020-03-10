@@ -10,9 +10,9 @@ const val DEATH_MOST = "Most Deaths"
 const val DEATH_LEAST = "Least Deaths"
 
 fun generateCountrySortList(): ArrayList<SortItem> = ArrayList<SortItem>().apply {
-    add(SortItem(ALPHABETICAL_AZ, ListSortStyle.ALPHABETICAL_AZ, true))
-    add(SortItem(INFECTED_MOST, ListSortStyle.INFECTED_LS))
+    add(SortItem(INFECTED_MOST, ListSortStyle.INFECTED_LS, true))
     add(SortItem(INFECTED_LEAST, ListSortStyle.INFECTED_SL))
+    add(SortItem(ALPHABETICAL_AZ, ListSortStyle.ALPHABETICAL_AZ))
     add(SortItem(DEATH_MOST, ListSortStyle.DEATH_LS))
     add(SortItem(DEATH_LEAST, ListSortStyle.DEATH_SL))
 }

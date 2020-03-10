@@ -69,7 +69,7 @@ class CoreSharedPreferences(val context: Context, val gson: Gson) {
     var countrySelectedSortStyle: ListSortStyle
         get() = readValue(
             PREFERENCE_REPORT_SORT_SELECTED,
-            ListSortStyle.ALPHABETICAL_AZ,
+            ListSortStyle.INFECTED_LS,
             ListSortStyle::class.java
         )
         set(value) = writeValue(PREFERENCE_REPORT_SORT_SELECTED, value)

@@ -4,22 +4,23 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.data.adapter.CitiesAdapter
-import com.pranjaldesai.coronavirustracker.data.models.OverallCity
 import com.pranjaldesai.coronavirustracker.data.models.OverallCountry
 import com.pranjaldesai.coronavirustracker.databinding.FragmentCountryDetailBinding
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreListFragment
+import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CountryDetailFragment(country: OverallCountry? = null) :
-    CoreListFragment<FragmentCountryDetailBinding, CitiesAdapter>() {
+    CoreListFragment<FragmentCountryDetailBinding, CitiesAdapter>(), ICovidView {
     @LayoutRes
-    override val layoutResourceId: Int =
-        com.pranjaldesai.coronavirustracker.R.layout.fragment_country_detail
+    override val layoutResourceId: Int = R.layout.fragment_country_detail
     private lateinit var country: OverallCountry
     private val args: CountryDetailFragmentArgs by navArgs()
     override val layoutManager: LinearLayoutManager by lazy {
@@ -32,6 +33,8 @@ class CountryDetailFragment(country: OverallCountry? = null) :
     override val recyclerView: RecyclerView by lazy { binding.expandableCityRecyclerview }
     override val toolbar: Toolbar? by lazy { binding.toolbar }
     override val toolbarTitle: String by lazy { this.country.countryName }
+    private val viewModel: CountryDetailViewModel by viewModel()
+    override val lifecycleOwner: LifecycleOwner by lazy { this }
     override val recyclerViewAdapter: CitiesAdapter = CitiesAdapter(ArrayList()) {
         onCitySelected(it)
     }
@@ -44,9 +47,14 @@ class CountryDetailFragment(country: OverallCountry? = null) :
         }
     }
 
+    override fun bindData() {
+        viewModel.subscribe(this, lifecycleOwner)
+        viewModel.overallCountry = country
+        super.bindData()
+    }
+
     override fun initializeLayout() {
         configureUpNavigation()
-
     }
 
     override fun loadSavedInstanceState(savedInstanceState: Bundle?) {
@@ -57,29 +65,7 @@ class CountryDetailFragment(country: OverallCountry? = null) :
     }
 
     private fun loadCities() {
-        val cityList = ArrayList<OverallCity>()
-
-        country.infectedLocations?.forEach { location ->
-            val deathLocation =
-                country.deathLocations?.find { it.infectedProvince == location.infectedProvince }
-            val recoveredLocation =
-                country.recoveredLocations?.find { it.infectedProvince == location.infectedProvince }
-            val deathLocationCount = deathLocation?.totalCount ?: 0
-            val recoveredLocationCount = recoveredLocation?.totalCount ?: 0
-            cityList.add(
-                OverallCity(
-                    location.infectedHistory,
-                    deathLocation?.infectedHistory,
-                    recoveredLocation?.infectedHistory,
-                    location.infectedProvince,
-                    location.totalCount,
-                    deathLocationCount,
-                    recoveredLocationCount,
-                    country.countryName
-                )
-            )
-        }
-        recyclerViewAdapter.updateData(cityList)
+        recyclerViewAdapter.updateData(viewModel.generateCities(country.countryName))
         hideProgressIndicator()
     }
 
