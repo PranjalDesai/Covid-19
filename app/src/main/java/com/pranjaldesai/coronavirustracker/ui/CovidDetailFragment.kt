@@ -56,9 +56,13 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         )
     }
 
+    private var isDarkMode = false
+
     override fun bindData() {
         super.bindData()
         viewModel.subscribe(this, lifecycleOwner)
+        isDarkMode = resources.getBoolean(R.bool.isDarkMode)
+        viewModel.isDarkMode = isDarkMode
         binding.detailRecyclerview.adapter = recyclerViewAdapter
         binding.detailRecyclerview.layoutManager = layoutManager
         val postListener = object : ValueEventListener {
@@ -120,9 +124,11 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
             extraRightOffset = EXTRA_OFFSET
             extraTopOffset = EXTRA_OFFSET
             holeRadius = HOLE_RADIUS
+            transparentCircleRadius = TRANSPARENT_HOLE_RADIUS
+            setHoleColor(Color.TRANSPARENT)
             setEntryLabelTextSize(ENTRY_LABEL_TEXT_SIZE)
             setUsePercentValues(false)
-            setEntryLabelColor(Color.BLACK)
+            setEntryLabelColor(viewModel.generateChartTextColor())
             animateXY(PIE_CHART_ANIMATION, PIE_CHART_ANIMATION)
         }
     }
@@ -157,6 +163,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
     companion object {
         const val EXTRA_OFFSET = 10f
         const val HOLE_RADIUS = 35f
+        const val TRANSPARENT_HOLE_RADIUS = 0f
         const val PIE_CHART_ANIMATION = 2000
         const val ENTRY_LABEL_TEXT_SIZE = 14f
     }

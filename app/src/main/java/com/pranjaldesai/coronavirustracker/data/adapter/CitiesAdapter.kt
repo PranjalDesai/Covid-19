@@ -10,8 +10,11 @@ import kotlinx.coroutines.GlobalScope
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CitiesAdapter(data: ArrayList<OverallCity>, private val clickListener: (Int) -> Unit) :
-    CoreDataAdapter<OverallCity, CityItemViewHolder>(data) {
+class CitiesAdapter(
+    data: ArrayList<OverallCity>,
+    private var isDarkMode: Boolean,
+    private val clickListener: (Int) -> Unit
+) : CoreDataAdapter<OverallCity, CityItemViewHolder>(data) {
 
     private var workingData: ArrayList<OverallCity> = ArrayList(data)
 
@@ -30,7 +33,7 @@ class CitiesAdapter(data: ArrayList<OverallCity>, private val clickListener: (In
     }
 
     override fun onBindViewHolder(holder: CityItemViewHolder, position: Int) =
-        holder.bind(data[position], position)
+        holder.bind(data[position], position, isDarkMode)
 
     override fun updateData(updatedData: List<OverallCity>) {
         workingData.clear()
@@ -45,6 +48,10 @@ class CitiesAdapter(data: ArrayList<OverallCity>, private val clickListener: (In
         workingData[position] = updatedItem
         data[position] = updatedItem
         notifyItemChanged(position)
+    }
+
+    fun updateTheme(isDarkMode: Boolean) {
+        this.isDarkMode = isDarkMode
     }
 
     private fun sort() {

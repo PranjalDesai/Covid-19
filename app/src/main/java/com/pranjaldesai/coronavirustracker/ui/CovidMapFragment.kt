@@ -45,11 +45,12 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
     override val toolbarTitle: String by lazy { getString(R.string.covid_map_toolbar_title) }
     private val heatStartPoints = floatArrayOf(0.5f, 1f)
     private val heatMapColors = intArrayOf(Color.rgb(240, 85, 69), Color.rgb(127, 0, 0))
+    private var isDarkMode = false
 
     override fun bindData() {
         viewModel.subscribe(this, lifecycleOwner)
         super.bindData()
-
+        isDarkMode = resources.getBoolean(R.bool.isDarkMode)
         val mapFragment = this.childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         val postListener = object : ValueEventListener {
@@ -71,7 +72,8 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
 
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map
-        googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style))
+        updateMapStyle()
+
         googleMap?.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(DEFAULT_LAT, DEFAULT_LONG), DEFAULT_ZOOM
@@ -102,11 +104,18 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
         if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION) {
             googleMap?.isMyLocationEnabled = checkLocationPermission()
         }
 
+    }
+
+    private fun updateMapStyle() {
+        if (isDarkMode) {
+            googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style))
+        } else {
+            googleMap?.mapType = GoogleMap.MAP_TYPE_HYBRID
+        }
     }
 
     private fun checkPermission() {

@@ -24,6 +24,7 @@
     <!-- Title -->
     <string name="covid_map_toolbar_title">Coronavirus Map</string>
     <string name="covid_detail_toolbar_title">Coronavirus Stats</string>
+    <string name="covid_detail_pie_chart_title">Overall Statistic</string>
 
 
 </resources>

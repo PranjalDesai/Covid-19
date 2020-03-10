@@ -57,7 +57,7 @@ class CovidDetailViewModel : CoreCovidViewModel<ICovidView>() {
 
         val pieDataSet = PieDataSet(chartData, EMPTY_STRING)
         pieDataSet.colors = colors
-        pieDataSet.valueTextColor = Color.BLACK
+        pieDataSet.valueTextColor = generateChartTextColor()
         pieDataSet.valueTextSize = PIE_DATA_TEXT_SIZE
         pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
         pieDataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
@@ -66,7 +66,11 @@ class CovidDetailViewModel : CoreCovidViewModel<ICovidView>() {
     }
 
     companion object {
-        val colors = listOf(Color.YELLOW, Color.RED, Color.GREEN)
+        val colors = listOf(
+            Color.parseColor("#FFC154"),
+            Color.parseColor("#EC6B56"),
+            Color.parseColor("#47B39C")
+        )
         const val DEFAULT_COUNT = 0
         const val INFECTED_LABEL = "Infected"
         const val DEATH_LABEL = "Death"

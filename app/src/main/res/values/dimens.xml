@@ -21,10 +21,14 @@
     <dimen name="internet_connection_lost_indicator_height">45dp</dimen>
     <dimen name="internet_connection_lost_indicator_image_width">35dp</dimen>
 
-    <dimen name="login_logo_height">150dp</dimen>
-    <dimen name="login_logo_width">370dp</dimen>
+    <!-- Splash Screen -->
+    <dimen name="splash_logo_height">180dp</dimen>
+    <dimen name="splash_logo_width">180dp</dimen>
+    <dimen name="splash_logo_margin_horizontal">32dp</dimen>
+    <dimen name="splash_title_text_size">32sp</dimen>
+    <dimen name="splash_title_margin_top">16dp</dimen>
 
-    <!-- SearchView Dialog-->
+    <!-- SearchView Dialog -->
     <dimen name="search_dialog_list_recycler_view_margin">16dp</dimen>
     <dimen name="search_dialog_search_view_margin">16dp</dimen>
     <dimen name="search_dialog_toolbar_elevation">8dp</dimen>

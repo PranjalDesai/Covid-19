@@ -7,17 +7,15 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorOnSecondary">@android:color/black</item>
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:statusBarColor">@android:color/black</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="statusBarBackground">@android:color/black</item>
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="buttonStyle">@style/Button</item>
         <item name="android:fontFamily">@font/roboto</item>
         <item name="android:textColorLink">@color/colorPrimary</item>
         <item name="title">@string/app_name</item>
-        <item name="bottomSheetDialogTheme">@style/FastModel.BottomSheetDialog</item>
+        <item name="bottomSheetDialogTheme">@style/Covid.BottomSheetDialog</item>
     </style>
 
 
@@ -90,11 +88,23 @@
         <item name="android:layout_width">0dp</item>
     </style>
 
-    <style name="LoginLogo">
+    <style name="SplashLogo">
         <item name="android:scaleType">fitXY</item>
-        <item name="android:layout_width">@dimen/login_logo_width</item>
-        <item name="android:layout_height">@dimen/login_logo_height</item>
-        <item name="android:src">@drawable/ic_action_close</item>
+        <item name="android:layout_width">@dimen/splash_logo_width</item>
+        <item name="android:layout_height">@dimen/splash_logo_height</item>
+        <item name="android:layout_marginHorizontal">@dimen/splash_logo_margin_horizontal</item>
+        <item name="android:src">@drawable/ic_action_splash_dna</item>
+    </style>
+
+    <style name="SplashTitle">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/splash_title_margin_top</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/splash_title_text_size</item>
     </style>
 
     <style name="AppTheme.FitSystemWindow">
@@ -138,7 +148,7 @@
         <item name="android:textSize">@dimen/bottom_sheet_title_text_size</item>
     </style>
 
-    <style name="FastModel.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+    <style name="Covid.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetDialog</item>
     </style>
 
