@@ -6,8 +6,8 @@ interface IPrimaryFragment {
     fun navigationHost(): INavigationHost?
     fun navigateTo(destinationFragmentResId: Int): Int {
         return when (destinationFragmentResId) {
-            R.id.fragmentOne -> R.id.action_global_fragmentOne
-            R.id.covidDetail -> R.id.action_global_fragmentTwo
+            R.id.covidMap -> R.id.action_global_covidMap
+            R.id.covidDetail -> R.id.action_global_covidDetail
             else -> R.id.covidDetail
         }
     }

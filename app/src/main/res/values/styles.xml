@@ -5,7 +5,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowTranslucentStatus">false</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorOnSecondary">@android:color/black</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:statusBarColor">@android:color/black</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
@@ -17,6 +19,7 @@
         <item name="title">@string/app_name</item>
         <item name="bottomSheetDialogTheme">@style/FastModel.BottomSheetDialog</item>
     </style>
+
 
     <style name="Container">
         <item name="android:layout_marginBottom">@dimen/margin_container</item>

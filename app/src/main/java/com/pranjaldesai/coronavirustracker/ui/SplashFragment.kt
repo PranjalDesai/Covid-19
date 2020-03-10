@@ -22,7 +22,7 @@ class SplashFragment : CoreFragment<FragmentSplashBinding>() {
 
     private fun navigateIntoApp() {
         if (findNavController().currentDestination?.id == R.id.splashFragment) {
-            findNavController().navigate(R.id.fragmentOne)
+            findNavController().navigate(R.id.covidMap)
         }
     }
 

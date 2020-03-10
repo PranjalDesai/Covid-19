@@ -38,7 +38,7 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
     private var currentZoomLevel = DEFAULT_ZOOM
 
     private val viewModel: CovidMapViewModel by viewModel()
-    private val bottomNavOptionId: Int = R.id.fragmentOne
+    private val bottomNavOptionId: Int = R.id.covidMap
     private val databaseRef = FirebaseDatabase.getInstance().reference
     private val markerList = ArrayList<Marker?>()
     override val toolbar: Toolbar? by lazy { binding.toolbar }
@@ -71,6 +71,7 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
 
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map
+        googleMap?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, R.raw.map_style))
         googleMap?.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(DEFAULT_LAT, DEFAULT_LONG), DEFAULT_ZOOM

@@ -11,7 +11,7 @@ class MainActivity : FMNavigationHostActivity(), IBottomNavMenuUpdater {
 
     override val connectivityMonitor: ConnectivityMonitor by inject()
     override val primaryFragmentResIdList: List<Int> = asList(
-        R.id.fragmentOne,
+        R.id.covidMap,
         R.id.covidDetail
     )
 
