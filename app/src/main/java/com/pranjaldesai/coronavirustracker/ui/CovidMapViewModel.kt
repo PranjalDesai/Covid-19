@@ -1,28 +1,38 @@
 package com.pranjaldesai.coronavirustracker.ui
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.heatmaps.WeightedLatLng
 import com.pranjaldesai.coronavirustracker.data.models.InfectedLocation
 
 class CovidMapViewModel : CoreCovidViewModel<ICovidView>() {
     override lateinit var subscribedView: ICovidView
 
-    fun generateCoordinatesList(): ArrayList<LatLng> {
-        val coordinatesList = ArrayList<LatLng>()
+    fun generateCoordinatesList(): ArrayList<WeightedLatLng> {
+        val coordinatesList = ArrayList<WeightedLatLng>()
         covidStats?.confirmed?.infectedLocations?.forEach {
-            val lat = it.coordinates?.lat?.toDouble()
-            val long = it.coordinates?.long?.toDouble()
+            val lat = it.coordinates?.lat
+            val long = it.coordinates?.long
+            val intensity = it.totalCount.toDouble()
             if (lat != null && long != null) {
-                coordinatesList.add(LatLng(lat, long))
+                coordinatesList.add(WeightedLatLng(LatLng(lat, long), intensity))
             }
         }
         return coordinatesList
     }
 
     fun generateCoordinates(infectedLocation: InfectedLocation): LatLng? {
-        val lat = infectedLocation.coordinates?.lat?.toDouble()
-        val long = infectedLocation.coordinates?.long?.toDouble()
+        val lat = infectedLocation.coordinates?.lat
+        val long = infectedLocation.coordinates?.long
         return if (lat != null && long != null) {
             LatLng(lat, long)
+        } else {
+            null
+        }
+    }
+
+    fun generateSnippet(infectedLocation: InfectedLocation): String? {
+        return if (infectedLocation.totalCount != 0) {
+            "${CovidMapFragment.DEFAULT_MARKER_SNIPPET} ${infectedLocation.totalCount}"
         } else {
             null
         }

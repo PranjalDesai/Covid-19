@@ -13,8 +13,8 @@ class SplashFragment : CoreFragment<FragmentSplashBinding>() {
 
     override fun bindData() {
         super.bindData()
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         launchOnMain {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true)
             navigateIntoApp()
         }
 

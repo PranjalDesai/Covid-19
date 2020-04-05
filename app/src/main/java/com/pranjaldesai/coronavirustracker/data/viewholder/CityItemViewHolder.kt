@@ -3,15 +3,19 @@ package com.pranjaldesai.coronavirustracker.data.viewholder
 import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.data.models.OverallCity
 import com.pranjaldesai.coronavirustracker.databinding.ViewCityListItemBinding
+import com.pranjaldesai.coronavirustracker.extension.LogExt.loge
+import com.pranjaldesai.coronavirustracker.helper.DATE_FORMAT
 import com.pranjaldesai.coronavirustracker.helper.EMPTY_STRING
 import com.pranjaldesai.coronavirustracker.helper.EMPTY_TEXT
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class CityItemViewHolder(
     val binding: ViewCityListItemBinding,
@@ -21,6 +25,7 @@ class CityItemViewHolder(
     fun bind(city: OverallCity, position: Int, isDarkMode: Boolean) = with(itemView) {
         binding.data = CityViewData(city)
         setOnClickListener { listener(position) }
+        val sortedKeys = generateSortedKeys(city)
         binding.expandedView.visibility = if (city.isExpanded) {
             binding.expandArrow.setImageDrawable(
                 resources.getDrawable(
@@ -38,80 +43,95 @@ class CityItemViewHolder(
             )
             View.GONE
         }
-
-        generateStackedBarChart(city, isDarkMode)
+        generateStackedBarChart(city, sortedKeys, isDarkMode)
         binding.executePendingBindings()
     }
 
-    private fun generateStackedBarChart(city: OverallCity, isDarkMode: Boolean) {
+    private fun generateSortedKeys(city: OverallCity): List<String> {
+        val filteredHistory = city.infectedHistory?.filterValues { it != 0 }
+        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
+        return try {
+            filteredHistory?.keys?.toList()?.sortedBy {
+                LocalDate.parse(it, dateTimeFormatter)
+            } ?: ArrayList()
+        } catch (exception: Exception) {
+            loge(exception)
+            ArrayList<String>()
+        }
+    }
+
+    private fun generateStackedBarChart(
+        city: OverallCity,
+        sortedKeys: List<String>,
+        isDarkMode: Boolean
+    ) {
         val textColor = generateChartTextColor(isDarkMode)
-        val sortedKeys =
-            city.infectedHistory?.keys?.toList()?.sortedByDescending { it } ?: ArrayList()
+
         val xAxis = ArrayList<String>(sortedKeys)
-        val yAxisInfectedHistory = ArrayList<BarEntry>()
-        val yAxisDeathHistory = ArrayList<BarEntry>()
-        val yAxisRecoveredHistory = ArrayList<BarEntry>()
+        val yAxisInfectedHistory = ArrayList<Entry>()
+        val yAxisDeathHistory = ArrayList<Entry>()
+        val yAxisRecoveredHistory = ArrayList<Entry>()
         sortedKeys.forEachIndexed { position, specificDate ->
             val infectedOnDate = city.infectedHistory?.get(specificDate)?.toFloat() ?: DEFAULT_FLOAT
             val recoveredOnDate =
                 city.recoveredHistory?.get(specificDate)?.toFloat() ?: DEFAULT_FLOAT
             val deathOnDate = city.deathHistory?.get(specificDate)?.toFloat() ?: DEFAULT_FLOAT
-            yAxisInfectedHistory.add(BarEntry(position.toFloat(), infectedOnDate))
-            yAxisDeathHistory.add(BarEntry(position.toFloat(), deathOnDate))
-            yAxisRecoveredHistory.add(BarEntry(position.toFloat(), recoveredOnDate))
+            yAxisInfectedHistory.add(Entry(position.toFloat(), infectedOnDate))
+            yAxisDeathHistory.add(Entry(position.toFloat(), deathOnDate))
+            yAxisRecoveredHistory.add(Entry(position.toFloat(), recoveredOnDate))
         }
-        with(binding.stackedBarChart) {
-            data = generateBarData(
+        with(binding.stackedLineChart) {
+            data = generateLineData(
                 yAxisInfectedHistory,
-                textColor,
                 yAxisDeathHistory,
-                yAxisRecoveredHistory
+                yAxisRecoveredHistory,
+                textColor
             )
             description.isEnabled = false
             this.xAxis.valueFormatter = IndexAxisValueFormatter(xAxis)
+
             this.xAxis.setCenterAxisLabels(true)
             this.xAxis.textColor = textColor
             this.axisLeft.textColor = textColor
             this.legend.textColor = textColor
             setBorderColor(textColor)
-            setVisibleXRangeMaximum(X_RANGE_MINIMUM)
-            barData.barWidth = BAR_WIDTH
-            groupBars(DEFAULT_FLOAT, GROUP_SPACE, BAR_SPACE)
             data.isHighlightEnabled = false
             axisRight.isEnabled = false
             setPinchZoom(false)
-            setFitBars(true)
             invalidate()
         }
     }
 
-    private fun generateBarData(
-        yAxisInfectedHistory: ArrayList<BarEntry>,
-        textColor: Int,
-        yAxisDeathHistory: ArrayList<BarEntry>,
-        yAxisRecoveredHistory: ArrayList<BarEntry>
-    ): BarData {
-        val barDataSetInfected =
-            generateBarDataSet(yAxisInfectedHistory, textColor, colors[0], INFECTED_LABEL)
-        val barDataSetRecovered =
-            generateBarDataSet(yAxisRecoveredHistory, textColor, colors[1], RECOVERED_LABEL)
-        val barDataSetDeath =
-            generateBarDataSet(yAxisDeathHistory, textColor, colors[2], DEATH_LABEL)
-        return BarData(barDataSetInfected, barDataSetRecovered, barDataSetDeath)
+    private fun generateLineData(
+        yAxisInfectedHistory: ArrayList<Entry>,
+        yAxisDeathHistory: ArrayList<Entry>,
+        yAxisRecoveredHistory: ArrayList<Entry>,
+        textColor: Int
+    ): LineData {
+        val lineDataSetInfected =
+            generateLineDataSet(yAxisInfectedHistory, textColor, colors[0], INFECTED_LABEL)
+        val lineDataSetRecovered =
+            generateLineDataSet(yAxisRecoveredHistory, textColor, colors[1], RECOVERED_LABEL)
+        val lineDataSetDeath =
+            generateLineDataSet(yAxisDeathHistory, textColor, colors[2], DEATH_LABEL)
+        return LineData(lineDataSetInfected, lineDataSetRecovered, lineDataSetDeath)
     }
 
-    private fun generateBarDataSet(
-        yAxisHistory: ArrayList<BarEntry>,
+    private fun generateLineDataSet(
+        yAxisHistory: ArrayList<Entry>,
         textColor: Int,
         color: Int,
         label: String
-    ): BarDataSet {
-        val barDataSet = BarDataSet(yAxisHistory, EMPTY_STRING)
-        barDataSet.setColors(color)
-        barDataSet.label = label
-        barDataSet.setDrawValues(false)
-        barDataSet.valueTextColor = textColor
-        return barDataSet
+    ): LineDataSet {
+        val lineDataSet = LineDataSet(yAxisHistory, EMPTY_STRING)
+        lineDataSet.setDrawValues(false)
+        lineDataSet.setColors(color)
+        lineDataSet.label = label
+        lineDataSet.valueTextColor = textColor
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.lineWidth = LINE_WIDTH
+        return lineDataSet
     }
 
     private fun generateChartTextColor(isDarkMode: Boolean): Int {
@@ -141,11 +161,8 @@ class CityItemViewHolder(
         const val INFECTED_LABEL = "Infected"
         const val DEATH_LABEL = "Death"
         const val RECOVERED_LABEL = "Recovered"
-        const val X_RANGE_MINIMUM = 3f
-        const val BAR_WIDTH = 0.30f
         const val DEFAULT_FLOAT = 0f
-        const val GROUP_SPACE = 0.4f
-        const val BAR_SPACE = 0.02f
+        const val LINE_WIDTH = 3f
         val colors = listOf(
             Color.parseColor("#FFC154"),
             Color.parseColor("#47B39C"),

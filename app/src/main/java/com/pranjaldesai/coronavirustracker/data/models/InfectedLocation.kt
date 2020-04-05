@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
 data class InfectedLocation(
     val coordinates: Coordinates?,
     val infectedCountry: String?,
-    val infectedHistory: Map<String, String>?,
+    val infectedHistory: Map<String, Int>?,
     val infectedProvince: String?,
     val totalCount: Int = 0
 ) : Parcelable {

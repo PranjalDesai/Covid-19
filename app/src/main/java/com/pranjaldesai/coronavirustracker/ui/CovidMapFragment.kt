@@ -26,7 +26,6 @@ import com.pranjaldesai.coronavirustracker.ui.shared.CoreFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.IPrimaryFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragment,
     OnMapReadyCallback, ICovidView {
@@ -137,11 +136,12 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
         post?.confirmed?.infectedLocations?.forEach {
             val coordinates = viewModel.generateCoordinates(it)
             val locationTitle = generateCityTitle(it)
-            coordinates?.let { coordinate ->
+            val snippet = viewModel.generateSnippet(it)
+            if (coordinates != null && snippet != null) {
                 markerList.add(
                     googleMap?.addMarker(
-                        MarkerOptions().position(coordinate).title(locationTitle)
-                            .snippet("$DEFAULT_MARKER_SNIPPET ${it.totalCount}")
+                        MarkerOptions().position(coordinates).title(locationTitle)
+                            .snippet(snippet)
                             .visible(false)
                     )
                 )
@@ -149,15 +149,13 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
         }
         val gradient = Gradient(heatMapColors, heatStartPoints, GRADIENT_MAP_SIZE)
         val coordinates = viewModel.generateCoordinatesList()
-        Timber.i("Pranjal $coordinates")
         if (coordinates.isNotEmpty()) {
             val mProvider = HeatmapTileProvider.Builder()
-                .data(viewModel.generateCoordinatesList())
+                .weightedData(coordinates)
                 .gradient(gradient)
                 .build()
             mProvider.setRadius(HEAT_MAP_RADIUS)
-            tileOverlay =
-                googleMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
+            tileOverlay = googleMap?.addTileOverlay(TileOverlayOptions().tileProvider(mProvider))
         }
     }
 

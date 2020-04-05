@@ -106,12 +106,12 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/stackedBarChart"
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/stackedLineChart"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/bar_char_height"
-                    android:layout_marginTop="@dimen/bar_char_margin_top"
-                    android:layout_marginBottom="@dimen/bar_char_margin_bottom"
+                    android:layout_height="@dimen/line_char_height"
+                    android:layout_marginTop="@dimen/line_char_margin_top"
+                    android:layout_marginBottom="@dimen/line_char_margin_bottom"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"

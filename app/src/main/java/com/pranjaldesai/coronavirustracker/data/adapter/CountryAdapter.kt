@@ -27,6 +27,14 @@ class CountryAdapter(
         get() = compareBy<OverallCountry> { it.totalInfected }
             .thenBy { it.countryName.toLowerCase(Locale.getDefault()) }
 
+    private val mostRecoveredComparator: Comparator<OverallCountry>
+        get() = compareByDescending<OverallCountry> { it.totalRecovered }
+            .thenBy { it.countryName.toLowerCase(Locale.getDefault()) }
+
+    private val leastRecoveredComparator: Comparator<OverallCountry>
+        get() = compareBy<OverallCountry> { it.totalRecovered }
+            .thenBy { it.countryName.toLowerCase(Locale.getDefault()) }
+
     private val mostDeathComparator: Comparator<OverallCountry>
         get() = compareByDescending<OverallCountry> { it.totalDeath }
             .thenBy { it.countryName.toLowerCase(Locale.getDefault()) }
@@ -80,6 +88,8 @@ class CountryAdapter(
             ListSortStyle.INFECTED_SL -> leastInfectedComparator
             ListSortStyle.DEATH_LS -> mostDeathComparator
             ListSortStyle.DEATH_SL -> leastDeathComparator
+            ListSortStyle.RECOVERED_LS -> mostRecoveredComparator
+            ListSortStyle.RECOVERED_SL -> leastRecoveredComparator
             ListSortStyle.ALPHABETICAL_AZ -> alphabeticalAZComparator
         }
     }

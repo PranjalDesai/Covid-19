@@ -7,8 +7,8 @@ import kotlinx.android.parcel.Parcelize
 @IgnoreExtraProperties
 @Parcelize
 data class Coordinates(
-    val lat: String?,
-    val long: String?
+    val lat: Double?,
+    val long: Double?
 ) : Parcelable {
     constructor() : this(null, null)
 }
