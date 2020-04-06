@@ -136,6 +136,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "com.github.PhilJay:MPAndroidChart:$mp_chart_version"
+    implementation "com.github.chrisbanes:PhotoView:$photo_view_version"
 
     implementation "org.koin:koin-core:$koin_version"
     implementation "org.koin:koin-core-ext:$koin_version"

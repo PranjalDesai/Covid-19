@@ -19,6 +19,16 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="adjustResize">
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.pranjaldesai.coronavirustracker.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key" />

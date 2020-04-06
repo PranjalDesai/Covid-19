@@ -8,8 +8,8 @@
         android:name="com.pranjaldesai.coronavirustracker.ui.SplashFragment"
         android:label="Splash">
         <action
-            android:id="@+id/action_splashFragment_to_covidMap"
-            app:destination="@id/covidMap"
+            android:id="@+id/action_splashFragment_to_covidDetail"
+            app:destination="@id/covidDetail"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -17,7 +17,12 @@
     <fragment
         android:id="@+id/covidMap"
         android:name="com.pranjaldesai.coronavirustracker.ui.CovidMapFragment"
-        android:label="covidMap"></fragment>
+        android:label="covidMap" />
+
+    <fragment
+        android:id="@+id/covidTip"
+        android:name="com.pranjaldesai.coronavirustracker.ui.CovidTipFragment"
+        android:label="covidTip" />
 
     <fragment
         android:id="@+id/covidDetail"
@@ -39,6 +44,10 @@
     <action
         android:id="@+id/action_global_covidDetail"
         app:destination="@id/covidDetail"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_covidTip"
+        app:destination="@id/covidTip"
         app:popUpToInclusive="true" />
 
     <action

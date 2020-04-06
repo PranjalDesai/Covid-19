@@ -9,6 +9,7 @@ import com.pranjaldesai.coronavirustracker.ui.CovidDetailViewModel
 import com.pranjaldesai.coronavirustracker.ui.CovidMapViewModel
 import com.pranjaldesai.coronavirustracker.ui.dialog.CoreSortDialog
 import com.pranjaldesai.coronavirustracker.ui.dialog.CountrySearchDialog
+import com.pranjaldesai.coronavirustracker.ui.shared.ImageFullScreenDialog
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -23,6 +24,7 @@ val appModule = module(override = true) {
         )
     }
     factory { (context: Context) -> CountrySearchDialog(context = context) }
+    factory { (context: Context) -> ImageFullScreenDialog(context) }
     viewModel { CovidMapViewModel() }
     viewModel { CovidDetailViewModel() }
     viewModel { CountryDetailViewModel() }

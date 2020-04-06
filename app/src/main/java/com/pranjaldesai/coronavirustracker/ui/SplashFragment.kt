@@ -22,13 +22,8 @@ class SplashFragment : CoreFragment<FragmentSplashBinding>() {
 
     private fun navigateIntoApp() {
         if (findNavController().currentDestination?.id == R.id.splashFragment) {
-            findNavController().navigate(R.id.covidMap)
+            findNavController().navigate(R.id.covidDetail)
         }
     }
 
-//    private fun setUpCrashlyticsInfo() {
-//        Crashlytics.setUserName(sharedPreferences.displayName)
-//        Crashlytics.setUserIdentifier(sharedPreferences.userId)
-//        Crashlytics.setUserEmail(sharedPreferences.userEmail)
-//    }
 }

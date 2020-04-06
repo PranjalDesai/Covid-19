@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.pranjaldesai.coronavirustracker.data.viewholder.TipItemViewHolder.TipViewData" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/plays_item_card_view"
+        style="@style/DefaultCardView"
+        app:cardCornerRadius="@dimen/default_cardview_corner_radius"
+        app:cardElevation="@dimen/default_cardview_elevation">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="fitXY"
+                app:imageUrl="@{ data.imageUrl }"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

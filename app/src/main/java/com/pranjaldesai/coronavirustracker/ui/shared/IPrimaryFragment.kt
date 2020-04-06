@@ -8,6 +8,7 @@ interface IPrimaryFragment {
         return when (destinationFragmentResId) {
             R.id.covidMap -> R.id.action_global_covidMap
             R.id.covidDetail -> R.id.action_global_covidDetail
+            R.id.covidTip -> R.id.action_global_covidTip
             else -> R.id.covidDetail
         }
     }

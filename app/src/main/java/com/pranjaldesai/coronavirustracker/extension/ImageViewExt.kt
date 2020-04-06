@@ -42,12 +42,6 @@ object ImageViewExt : KoinComponent {
             externalImagePicasso.load(placeholderResourceId).into(this)
         }
     }
-
-    fun loadImageForDb(url: String?) {
-        if (url.isNotNullOrBlank()) {
-            externalImagePicasso.load(url).fetch()
-        }
-    }
 }
 
 @BindingAdapter("imageDrawable")

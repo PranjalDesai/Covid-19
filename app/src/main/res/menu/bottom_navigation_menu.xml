@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/covidDetail"
+        android:icon="@drawable/ic_action_detail"
+        android:title="Stats" />
+    <item
         android:id="@+id/covidMap"
         android:icon="@drawable/ic_action_map"
         android:title="Map" />
     <item
-        android:id="@+id/covidDetail"
-        android:icon="@drawable/ic_action_detail"
-        android:title="Stats" />
+        android:id="@+id/covidTip"
+        android:icon="@drawable/ic_action_lightbulb"
+        android:title="Tips" />
 </menu>
