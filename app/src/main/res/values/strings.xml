@@ -26,18 +26,14 @@
     <string name="covid_detail_toolbar_title">Coronavirus Stats</string>
     <string name="covid_detail_pie_chart_title">Overall Statistic</string>
     <string name="covid_tip_toolbar_title">Coronavirus Tips</string>
+    <string name="covid_tip_tab_travel">Travelling</string>
+    <string name="covid_tip_tab_misconceptions">Misconceptions</string>
+    <string name="covid_tip_tab_prevention">Prevention</string>
+    <string name="covid_tip_image_toolbar_title">Coronavirus Tip Image</string>
+    <string name="covid_country_detail_daily_infected_title">Daily Infected</string>
     <string name="city_list_item_infected_history_title">Infected History</string>
 
-    <array name="tip_urls">
-        <item>
-            https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/handshaking.png?sfvrsn=4aed53c5_2
-        </item>
-        <item>
-            https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/safe-greetings.png?sfvrsn=2e97004e_2
-        </item>
-        <item>
-            https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/wearing-gloves.png?sfvrsn=ec69b46a_2
-        </item>
+    <string-array name="prevention_tip_urls">
         <item>
             https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/protect-yourself/blue-1.png?sfvrsn=3d15aa1c_2
         </item>
@@ -51,6 +47,37 @@
             https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/protect-yourself/blue-4.png?sfvrsn=a5317377_11
         </item>
         <item>
+            https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/handshaking.png?sfvrsn=4aed53c5_2
+        </item>
+        <item>
+            https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/safe-greetings.png?sfvrsn=2e97004e_2
+        </item>
+        <item>
+            https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/wearing-gloves.png?sfvrsn=ec69b46a_2
+        </item>
+    </string-array>
+    <string-array name="misconception_tip_urls">
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mb-sun-exposure.tmb-1920v.jpg?sfvrsn=658ce588_3</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mb-recovery.tmb-1920v.jpg?sfvrsn=1404cfd0_3</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mb-breathing-exercice.tmb-1920v.jpg?sfvrsn=db06f4a9_3</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mb-alcohol.tmb-1920v.jpg?sfvrsn=19ea13fb_3</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/52.png</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mb-cold-snow.png?sfvrsn=1e557ba_2</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mb-hot-bath.png?sfvrsn=f1ebbc_2</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mb-mosquito-bite.png?sfvrsn=a1d90f6_2</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mythbusters-27.png?sfvrsn=d17bc6bb_2</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/mythbusters-31.png</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mythbusters-25.png?sfvrsn=d3bf829c_4</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mythbusters-33.png?sfvrsn=47bfd0aa_4</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/11.png?sfvrsn=97f2a51e_4</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/23.png</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/19.png</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/mythbuster-2.png</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/mythbuster-3.png</item>
+        <item>https://www.who.int/images/default-source/health-topics/coronavirus/myth-busters/web-mythbusters/mythbuster-4.png?sfvrsn=e163bada_8</item>
+    </string-array>
+    <string-array name="travelling_tip_urls">
+        <item>
             https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/stay-healthy-while-travelling/1.png?sfvrsn=1a813eed_10
         </item>
         <item>
@@ -62,7 +89,6 @@
         <item>
             https://www.who.int/images/default-source/health-topics/coronavirus/risk-communications/general-public/stay-healthy-while-travelling/4.png?sfvrsn=9719c641_8
         </item>
-    </array>
-
+    </string-array>
 
 </resources>

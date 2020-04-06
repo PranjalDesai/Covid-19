@@ -171,7 +171,6 @@
             @dimen/covid_pie_chart_title_margin_horizontal
         </item>
         <item name="android:layout_marginTop">@dimen/covid_pie_chart_title_margin_top</item>
-        <item name="android:text">@string/covid_detail_pie_chart_title</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">@dimen/covid_pie_chart_title_text</item>
         <item name="android:textStyle">bold</item>

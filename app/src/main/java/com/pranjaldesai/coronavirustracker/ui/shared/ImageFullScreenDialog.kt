@@ -10,6 +10,7 @@ import android.view.View
 import androidx.annotation.StyleRes
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pranjaldesai.coronavirustracker.R
@@ -31,7 +32,7 @@ class ImageFullScreenDialog(
     private val fullScreenPhotoView: PhotoView
     private val fullScreenShareButton: FloatingActionButton
     private val fullScreenToolbar: Toolbar
-    private var imageBitmap: Bitmap? = null
+    private lateinit var imageBitmap: Bitmap
     private val externalImagePicasso: Picasso by inject()
 
     init {
@@ -49,8 +50,10 @@ class ImageFullScreenDialog(
             .into(fullScreenPhotoView)
         externalImagePicasso.load(imageUrl).into(object : Target {
             override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-                imageBitmap = bitmap
-//                fullScreenShareButton.visibility = View.VISIBLE
+                bitmap?.let {
+                    imageBitmap = bitmap
+                    fullScreenShareButton.visibility = View.VISIBLE
+                }
             }
 
             override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
@@ -78,16 +81,18 @@ class ImageFullScreenDialog(
         }
     }
 
-    private fun getBitmapFromView(bmp: Bitmap?): Uri? {
+    private fun getBitmapFromView(bmp: Bitmap): Uri? {
         var bmpUri: Uri? = null
         try {
             val file =
                 File(context.externalCacheDir, System.currentTimeMillis().toString() + ".jpg")
-
             val out = FileOutputStream(file)
-            bmp?.compress(Bitmap.CompressFormat.JPEG, 90, out)
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, out)
             out.close()
-            bmpUri = Uri.fromFile(file)
+            bmpUri = FileProvider.getUriForFile(
+                context,
+                context.applicationContext.packageName + ".provider", file
+            )
 
         } catch (e: IOException) {
             e.printStackTrace()

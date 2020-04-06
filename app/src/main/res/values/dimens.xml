@@ -52,6 +52,7 @@
     <dimen name="covid_pie_chart_title_margin_horizontal">16dp</dimen>
     <dimen name="covid_pie_chart_margin_vertical">8dp</dimen>
     <dimen name="covid_pie_chart_min_height">300dp</dimen>
+    <dimen name="covid_line_chart_min_height">300dp</dimen>
 
     <!-- Card View -->
     <dimen name="default_cardview_corner_radius">4dp</dimen>
@@ -60,9 +61,9 @@
     <dimen name="default_cardview_margin_vertical">8dp</dimen>
     <dimen name="default_detail_cardview_corner_radius">4dp</dimen>
     <dimen name="default_detail_cardview_elevation">4dp</dimen>
-    <dimen name="line_char_height">340dp</dimen>
-    <dimen name="line_char_margin_top">16dp</dimen>
-    <dimen name="line_char_margin_bottom">8dp</dimen>
+    <dimen name="line_chart_height">340dp</dimen>
+    <dimen name="line_chart_margin_top">16dp</dimen>
+    <dimen name="line_chart_margin_bottom">8dp</dimen>
 
     <!-- View Holder -->
 

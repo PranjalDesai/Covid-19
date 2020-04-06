@@ -46,20 +46,20 @@
 
                     <TextView
                         android:id="@+id/cityName"
-                        android:text="@{ data.title }"
                         style="@style/ViewHolderTitle"
-                        app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
+                        android:text="@{ data.title }"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Illinois" />
 
                     <TextView
                         android:id="@+id/infected"
-                        android:text="@{ data.totalInfected }"
                         style="@style/ViewHolderSubText"
-                        app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
+                        android:text="@{ data.totalInfected }"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/cityName"
                         tools:text="Infected: 1000" />
@@ -69,8 +69,8 @@
                         style="@style/ViewHolderSubText"
                         android:text="@{ data.totalRecovered }"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/expand_arrow"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/infected"
                         tools:text="Recovered: 1000" />
 
@@ -109,12 +109,12 @@
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/stackedLineChart"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/line_char_height"
-                    android:layout_marginTop="@dimen/line_char_margin_top"
-                    android:layout_marginBottom="@dimen/line_char_margin_bottom"
+                    android:layout_height="@dimen/line_chart_height"
+                    android:layout_marginTop="@dimen/line_chart_margin_top"
+                    android:layout_marginBottom="@dimen/line_chart_margin_bottom"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/infected_history_title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 

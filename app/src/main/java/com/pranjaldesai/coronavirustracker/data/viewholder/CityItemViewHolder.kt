@@ -14,6 +14,7 @@ import com.pranjaldesai.coronavirustracker.extension.LogExt.loge
 import com.pranjaldesai.coronavirustracker.helper.DATE_FORMAT
 import com.pranjaldesai.coronavirustracker.helper.EMPTY_STRING
 import com.pranjaldesai.coronavirustracker.helper.EMPTY_TEXT
+import java.text.NumberFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -43,7 +44,7 @@ class CityItemViewHolder(
             )
             View.GONE
         }
-        generateStackedBarChart(city, sortedKeys, isDarkMode)
+        generateStackedLineChart(city, sortedKeys, isDarkMode)
         binding.executePendingBindings()
     }
 
@@ -60,7 +61,7 @@ class CityItemViewHolder(
         }
     }
 
-    private fun generateStackedBarChart(
+    private fun generateStackedLineChart(
         city: OverallCity,
         sortedKeys: List<String>,
         isDarkMode: Boolean
@@ -144,9 +145,11 @@ class CityItemViewHolder(
 
     class CityViewData(private val overallCity: OverallCity) {
         val title: String = generateTitle(overallCity.infectedProvince)
-        val totalInfected: String = "$INFECTED_LABEL: ${overallCity.totalInfectedCount}"
-        val totalDeath: String = "$DEATH_LABEL: ${overallCity.totalDeathCount}"
-        val totalRecovered: String = "$RECOVERED_LABEL: ${overallCity.totalRecoveredCount}"
+        val totalInfected: String =
+            "$INFECTED_LABEL: ${numberFormat.format(overallCity.totalInfectedCount)}"
+        val totalDeath: String = "$DEATH_LABEL: ${numberFormat.format(overallCity.totalDeathCount)}"
+        val totalRecovered: String =
+            "$RECOVERED_LABEL: ${numberFormat.format(overallCity.totalRecoveredCount)}"
 
         private fun generateTitle(cityName: String?): String {
             return if (cityName != null && cityName != EMPTY_TEXT) {
@@ -168,5 +171,6 @@ class CityItemViewHolder(
             Color.parseColor("#47B39C"),
             Color.parseColor("#EC6B56")
         )
+        val numberFormat: NumberFormat = NumberFormat.getInstance()
     }
 }

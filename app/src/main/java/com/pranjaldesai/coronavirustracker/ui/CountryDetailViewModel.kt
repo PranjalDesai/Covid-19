@@ -12,6 +12,9 @@ class CountryDetailViewModel : CoreViewModel<ICovidView>() {
     override lateinit var subscribedView: ICovidView
 
     var overallCountry: OverallCountry? = null
+    private val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
+    private val mostInfectedComparator =
+        compareBy<String> { LocalDate.parse(it, dateTimeFormatter) }
 
     fun generateCities(countryName: String): ArrayList<OverallCity> {
         val cityList = ArrayList<OverallCity>()
@@ -50,7 +53,6 @@ class CountryDetailViewModel : CoreViewModel<ICovidView>() {
         val filteredHistory = history?.filterValues {
             it != DEFAULT_COUNT
         }
-        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
         return try {
             filteredHistory?.keys?.toList()?.sortedByDescending {
                 LocalDate.parse(it, dateTimeFormatter)
@@ -72,6 +74,47 @@ class CountryDetailViewModel : CoreViewModel<ICovidView>() {
             history?.get(keys[DEFAULT_INDEX]) ?: DEFAULT_COUNT
         } else {
             DEFAULT_COUNT
+        }
+    }
+
+    fun generateDailyInfected(): Map<String, Int> {
+        val infectedHistoryDates = ArrayList<String>()
+        overallCountry?.infectedLocations?.forEach {
+            infectedHistoryDates.clear()
+            infectedHistoryDates.addAll(
+                infectedHistoryDates.union(
+                    it.infectedHistory?.keys?.toList() ?: ArrayList()
+                )
+            )
+        }
+        val sortedInfectedHistoryDates = generateSortedHistoryKeys(infectedHistoryDates)
+        val valueMap = HashMap<String, Int>()
+        sortedInfectedHistoryDates.forEach {
+            valueMap[it] = 0
+        }
+        overallCountry?.infectedLocations?.forEach {
+            sortedInfectedHistoryDates.forEachIndexed { index, currentDate ->
+                val nextIndexDate = index + 1
+                if (nextIndexDate < sortedInfectedHistoryDates.size) {
+                    val todayInfection = it.infectedHistory?.get(currentDate) ?: 0
+                    val yesterdayInfection =
+                        it.infectedHistory?.get(sortedInfectedHistoryDates[nextIndexDate]) ?: 0
+                    val newlyAdded = todayInfection - yesterdayInfection
+                    if (newlyAdded > 0) {
+                        val currentValue = valueMap[currentDate] ?: 0
+                        valueMap[currentDate] = currentValue + newlyAdded
+                    }
+
+                }
+            }
+        }
+        return valueMap.toSortedMap(mostInfectedComparator)
+    }
+
+    private fun generateSortedHistoryKeys(keys: ArrayList<String>): List<String> {
+        val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT)
+        return keys.sortedByDescending {
+            LocalDate.parse(it, dateTimeFormatter)
         }
     }
 

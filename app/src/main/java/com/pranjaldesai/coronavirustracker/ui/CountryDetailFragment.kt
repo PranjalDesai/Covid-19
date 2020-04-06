@@ -1,5 +1,6 @@
 package com.pranjaldesai.coronavirustracker.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
@@ -9,10 +10,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.data.adapter.CitiesAdapter
 import com.pranjaldesai.coronavirustracker.data.models.OverallCountry
 import com.pranjaldesai.coronavirustracker.databinding.FragmentCountryDetailBinding
+import com.pranjaldesai.coronavirustracker.helper.EMPTY_STRING
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreListFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -52,6 +58,54 @@ class CountryDetailFragment(country: OverallCountry? = null) :
         viewModel.subscribe(this, lifecycleOwner)
         viewModel.overallCountry = country
         super.bindData()
+        val dailyInfectedMap = viewModel.generateDailyInfected()
+        val xAxis = ArrayList<String>(dailyInfectedMap.keys)
+        val yAxisInfectedHistory = ArrayList<Entry>()
+        dailyInfectedMap.keys.forEachIndexed { position, key ->
+            yAxisInfectedHistory.add(
+                Entry(
+                    position.toFloat(),
+                    dailyInfectedMap[key]?.toFloat() ?: DEFAULT_FLOAT
+                )
+            )
+        }
+        val textColor = generateChartTextColor()
+        val lineDataSet = LineDataSet(yAxisInfectedHistory, EMPTY_STRING)
+        lineDataSet.setDrawValues(false)
+        lineDataSet.setColors(color)
+        lineDataSet.valueTextColor = textColor
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.setDrawFilled(true)
+        lineDataSet.lineWidth = LINE_WIDTH
+        val lineData = LineData(lineDataSet)
+        with(binding.stackedLineChart) {
+            data = lineData
+            description.isEnabled = false
+            legend.isEnabled = false
+            this.xAxis.valueFormatter = IndexAxisValueFormatter(xAxis)
+            this.xAxis.setAvoidFirstLastClipping(true)
+            this.xAxis.setCenterAxisLabels(true)
+            this.xAxis.textColor = textColor
+            this.axisLeft.textColor = textColor
+            this.legend.textColor = textColor
+            setBorderColor(textColor)
+            data.isHighlightEnabled = false
+            axisRight.isEnabled = false
+            setPinchZoom(false)
+            animateXY(
+                CovidDetailFragment.PIE_CHART_ANIMATION,
+                CovidDetailFragment.PIE_CHART_ANIMATION
+            )
+        }
+    }
+
+    private fun generateChartTextColor(): Int {
+        return if (isDarkMode) {
+            Color.WHITE
+        } else {
+            Color.BLACK
+        }
     }
 
     override fun initializeLayout() {
@@ -86,4 +140,10 @@ class CountryDetailFragment(country: OverallCountry? = null) :
                 setNavigationOnClickListener { findNavController().navigateUp() }
             }
         }
+
+    companion object {
+        const val DEFAULT_FLOAT = 0f
+        const val LINE_WIDTH = 3f
+        val color = Color.parseColor("#FFC154")
+    }
 }
