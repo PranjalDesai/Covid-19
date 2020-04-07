@@ -1,11 +1,9 @@
 package com.pranjaldesai.coronavirustracker.ui
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.graphics.Color
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,6 +17,7 @@ import com.google.maps.android.heatmaps.Gradient
 import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.data.models.CovidStats
+import com.pranjaldesai.coronavirustracker.data.models.OverallCountry
 import com.pranjaldesai.coronavirustracker.databinding.FragmentCovidMapBinding
 import com.pranjaldesai.coronavirustracker.extension.LogExt.loge
 import com.pranjaldesai.coronavirustracker.helper.generateCityTitle
@@ -28,7 +27,7 @@ import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragment,
-    OnMapReadyCallback, ICovidView {
+    OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener, ICovidView {
 
     override val layoutResourceId: Int = R.layout.fragment_covid_map
     override val lifecycleOwner: LifecycleOwner by lazy { this }
@@ -43,9 +42,11 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
     private val markerList = ArrayList<Marker?>()
     override val toolbar: Toolbar? by lazy { binding.toolbar }
     override val toolbarTitle: String by lazy { getString(R.string.covid_map_toolbar_title) }
+    override val useCustomBackButtonAction: Boolean = true
     private val heatStartPoints = floatArrayOf(0.5f, 1f)
     private val heatMapColors = intArrayOf(Color.rgb(240, 85, 69), Color.rgb(127, 0, 0))
     private var isDarkMode = false
+    private var areMarkersVisible = false
 
     override fun bindData() {
         viewModel.subscribe(this, lifecycleOwner)
@@ -70,19 +71,33 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
         databaseRef.addValueEventListener(postListener)
     }
 
+    override fun onBackButtonClicked() {
+        super.onBackButtonClicked()
+        activity?.startActivity(homeIntent)
+    }
+
     override fun onMapReady(map: GoogleMap?) {
         googleMap = map
         updateMapStyle()
 
+        googleMap?.setOnInfoWindowClickListener(this)
         googleMap?.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(DEFAULT_LAT, DEFAULT_LONG), DEFAULT_ZOOM
             )
         )
-        googleMap?.isMyLocationEnabled = checkLocationPermission()
-        googleMap?.uiSettings?.isMyLocationButtonEnabled = checkLocationPermission()
         googleMap?.setOnCameraMoveListener {
             updateMarkerZoomOnMovement()
+        }
+    }
+
+    override fun onInfoWindowClick(marker: Marker) {
+        val countryName = marker.tag as String?
+        countryName?.let {
+            val overallCountry = viewModel.generateOverallCountry(it)
+            overallCountry?.let {
+                navigateToCountryDetail(overallCountry)
+            }
         }
     }
 
@@ -90,24 +105,11 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
         super.onResume()
         subscribeToNavigationHost()
         updateBottomNavigationSelection(bottomNavOptionId)
-        checkPermission()
     }
 
     override fun onPause() {
         super.onPause()
         unsubscribeFromNavigationHost()
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION) {
-            googleMap?.isMyLocationEnabled = checkLocationPermission()
-        }
-
     }
 
     private fun updateMapStyle() {
@@ -118,18 +120,10 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
         }
     }
 
-    private fun checkPermission() {
-        activity?.let { it ->
-            if (checkLocationPermission().not()) {
-                ActivityCompat.requestPermissions(
-                    it,
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                    PERMISSION_REQUEST_COARSE_LOCATION
-                )
-            } else {
-                googleMap?.isMyLocationEnabled = true
-            }
-        }
+    private fun navigateToCountryDetail(country: OverallCountry) {
+        findNavController().navigate(
+            CovidMapFragmentDirections.actionCovidMapToCountryDetailFragment(country)
+        )
     }
 
     private fun generateHeatMap(post: CovidStats?) {
@@ -137,14 +131,15 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
             val coordinates = viewModel.generateCoordinates(it)
             val locationTitle = generateCityTitle(it)
             val snippet = viewModel.generateSnippet(it)
+            val tag = viewModel.generateTag(it)
             if (coordinates != null && snippet != null) {
-                markerList.add(
-                    googleMap?.addMarker(
-                        MarkerOptions().position(coordinates).title(locationTitle)
-                            .snippet(snippet)
-                            .visible(false)
-                    )
+                val marker = googleMap?.addMarker(
+                    MarkerOptions().position(coordinates).title(locationTitle)
+                        .snippet(snippet)
+                        .visible(false)
                 )
+                marker?.tag = tag
+                markerList.add(marker)
             }
         }
         val gradient = Gradient(heatMapColors, heatStartPoints, GRADIENT_MAP_SIZE)
@@ -159,23 +154,15 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
         }
     }
 
-    private fun checkLocationPermission(): Boolean {
-        return context?.let {
-            ActivityCompat.checkSelfPermission(
-                it,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        } ?: false
-    }
-
     private fun updateMarkerZoomOnMovement() {
         val zoomLevel = googleMap?.cameraPosition?.zoom
         val showMarkers = viewModel.shouldShowMarkers(currentZoomLevel, zoomLevel)
-        if (showMarkers != null) {
+        if (showMarkers != null && areMarkersVisible != showMarkers) {
             currentZoomLevel = zoomLevel ?: DEFAULT_ZOOM
             markerList.forEach {
                 it?.isVisible = showMarkers
             }
+            areMarkersVisible = showMarkers
         }
     }
 

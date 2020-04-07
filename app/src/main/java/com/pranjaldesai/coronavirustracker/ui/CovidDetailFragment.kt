@@ -36,7 +36,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
     override val toolbar: Toolbar? by lazy { binding.toolbar }
     override val toolbarTitle: String by lazy { getString(R.string.covid_detail_toolbar_title) }
     override val menuResourceId: Int? = R.menu.toolbar_menu
-
+    override val useCustomBackButtonAction: Boolean = true
     private val viewModel: CovidDetailViewModel by viewModel()
     private val sharedPreferences: CoreSharedPreferences by inject()
     private val searchDialog: CountrySearchDialog by inject { parametersOf(context) }
@@ -112,6 +112,11 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         overallCountryList.addAll(viewModel.generateOverallCountryList())
         recyclerViewAdapter.updateData(overallCountryList)
 
+    }
+
+    override fun onBackButtonClicked() {
+        super.onBackButtonClicked()
+        activity?.startActivity(homeIntent)
     }
 
     private fun updatePieChart() {

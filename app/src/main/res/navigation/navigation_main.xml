@@ -15,16 +15,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/covidMap"
-        android:name="com.pranjaldesai.coronavirustracker.ui.CovidMapFragment"
-        android:label="covidMap" />
-
-    <fragment
-        android:id="@+id/covidTip"
-        android:name="com.pranjaldesai.coronavirustracker.ui.CovidTipFragment"
-        android:label="covidTip" />
-
-    <fragment
         android:id="@+id/covidDetail"
         android:name="com.pranjaldesai.coronavirustracker.ui.CovidDetailFragment"
         android:label="covidDetail">
@@ -36,6 +26,25 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+
+    <fragment
+        android:id="@+id/covidMap"
+        android:name="com.pranjaldesai.coronavirustracker.ui.CovidMapFragment"
+        android:label="covidMap">
+        <action
+            android:id="@+id/action_covidMap_to_countryDetailFragment"
+            app:destination="@id/countryDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/covidDetail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/covidTip"
+        android:name="com.pranjaldesai.coronavirustracker.ui.CovidTipFragment"
+        android:label="covidTip" />
 
     <action
         android:id="@+id/action_global_covidMap"

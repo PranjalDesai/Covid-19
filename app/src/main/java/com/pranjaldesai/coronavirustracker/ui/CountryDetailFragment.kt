@@ -10,15 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.data.adapter.CitiesAdapter
 import com.pranjaldesai.coronavirustracker.data.models.OverallCountry
 import com.pranjaldesai.coronavirustracker.databinding.FragmentCountryDetailBinding
-import com.pranjaldesai.coronavirustracker.helper.EMPTY_STRING
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreListFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -58,26 +55,15 @@ class CountryDetailFragment(country: OverallCountry? = null) :
         viewModel.subscribe(this, lifecycleOwner)
         viewModel.overallCountry = country
         super.bindData()
+        generateDailyInfectedChart()
+    }
+
+    private fun generateDailyInfectedChart() {
         val dailyInfectedMap = viewModel.generateDailyInfected()
         val xAxis = ArrayList<String>(dailyInfectedMap.keys)
-        val yAxisInfectedHistory = ArrayList<Entry>()
-        dailyInfectedMap.keys.forEachIndexed { position, key ->
-            yAxisInfectedHistory.add(
-                Entry(
-                    position.toFloat(),
-                    dailyInfectedMap[key]?.toFloat() ?: DEFAULT_FLOAT
-                )
-            )
-        }
+        val yAxisInfectedHistory = viewModel.populateDailyHistoryYAxisData(dailyInfectedMap)
         val textColor = generateChartTextColor()
-        val lineDataSet = LineDataSet(yAxisInfectedHistory, EMPTY_STRING)
-        lineDataSet.setDrawValues(false)
-        lineDataSet.setColors(color)
-        lineDataSet.valueTextColor = textColor
-        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        lineDataSet.setDrawCircles(false)
-        lineDataSet.setDrawFilled(true)
-        lineDataSet.lineWidth = LINE_WIDTH
+        val lineDataSet = viewModel.generateLineDataSet(yAxisInfectedHistory, textColor)
         val lineData = LineData(lineDataSet)
         with(binding.stackedLineChart) {
             data = lineData
@@ -93,10 +79,7 @@ class CountryDetailFragment(country: OverallCountry? = null) :
             data.isHighlightEnabled = false
             axisRight.isEnabled = false
             setPinchZoom(false)
-            animateXY(
-                CovidDetailFragment.PIE_CHART_ANIMATION,
-                CovidDetailFragment.PIE_CHART_ANIMATION
-            )
+            animateXY(LINE_CHART_ANIMATION, LINE_CHART_ANIMATION)
         }
     }
 
@@ -144,6 +127,7 @@ class CountryDetailFragment(country: OverallCountry? = null) :
     companion object {
         const val DEFAULT_FLOAT = 0f
         const val LINE_WIDTH = 3f
+        const val LINE_CHART_ANIMATION = 1000
         val color = Color.parseColor("#FFC154")
     }
 }

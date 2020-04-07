@@ -28,6 +28,7 @@ class CovidTipFragment :
     }
     override val recyclerView: RecyclerView by lazy { binding.tipRecyclerview }
     override val toolbar: Toolbar? by lazy { binding.toolbar }
+    override val useCustomBackButtonAction: Boolean = true
     override val toolbarTitle: String by lazy { getString(R.string.covid_tip_toolbar_title) }
     override val recyclerViewAdapter: TipsAdapter = TipsAdapter(ArrayList()) {
         onTipSelected(it)
@@ -69,6 +70,11 @@ class CovidTipFragment :
     private fun onTipSelected(position: Int) {
         val specificTip = recyclerViewAdapter.getItemAtPosition(position)
         imageFullScreenDialog.imageUrl(specificTip).show()
+    }
+
+    override fun onBackButtonClicked() {
+        super.onBackButtonClicked()
+        activity?.startActivity(homeIntent)
     }
 
     override fun onResume() {

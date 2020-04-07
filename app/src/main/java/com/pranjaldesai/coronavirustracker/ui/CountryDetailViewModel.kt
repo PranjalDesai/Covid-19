@@ -1,9 +1,12 @@
 package com.pranjaldesai.coronavirustracker.ui
 
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
 import com.pranjaldesai.coronavirustracker.data.models.OverallCity
 import com.pranjaldesai.coronavirustracker.data.models.OverallCountry
 import com.pranjaldesai.coronavirustracker.extension.LogExt.loge
 import com.pranjaldesai.coronavirustracker.helper.DATE_FORMAT
+import com.pranjaldesai.coronavirustracker.helper.EMPTY_STRING
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -78,6 +81,38 @@ class CountryDetailViewModel : CoreViewModel<ICovidView>() {
     }
 
     fun generateDailyInfected(): Map<String, Int> {
+        val infectedHistoryDates = generateAllInfectedDates()
+        val sortedInfectedHistoryDates = generateSortedHistoryKeys(infectedHistoryDates)
+        val valueMap = defaultEmptyHashMap(sortedInfectedHistoryDates)
+        overallCountry?.infectedLocations?.forEach {
+            sortedInfectedHistoryDates.forEachIndexed { index, currentDate ->
+                val nextIndexDate = index + DEFAULT_NEXT_INDEX
+                if (nextIndexDate < sortedInfectedHistoryDates.size) {
+                    val todayInfection = it.infectedHistory?.get(currentDate) ?: DEFAULT_COUNT
+                    val yesterdayInfection =
+                        it.infectedHistory?.get(sortedInfectedHistoryDates[nextIndexDate])
+                            ?: DEFAULT_COUNT
+                    val newlyAdded = todayInfection - yesterdayInfection
+                    if (newlyAdded > DEFAULT_COUNT) {
+                        val currentValue = valueMap[currentDate] ?: DEFAULT_COUNT
+                        valueMap[currentDate] = currentValue + newlyAdded
+                    }
+
+                }
+            }
+        }
+        return valueMap.toSortedMap(mostInfectedComparator)
+    }
+
+    private fun defaultEmptyHashMap(sortedInfectedHistoryDates: List<String>): HashMap<String, Int> {
+        val valueMap = HashMap<String, Int>()
+        sortedInfectedHistoryDates.forEach {
+            valueMap[it] = DEFAULT_COUNT
+        }
+        return valueMap
+    }
+
+    private fun generateAllInfectedDates(): ArrayList<String> {
         val infectedHistoryDates = ArrayList<String>()
         overallCountry?.infectedLocations?.forEach {
             infectedHistoryDates.clear()
@@ -87,28 +122,32 @@ class CountryDetailViewModel : CoreViewModel<ICovidView>() {
                 )
             )
         }
-        val sortedInfectedHistoryDates = generateSortedHistoryKeys(infectedHistoryDates)
-        val valueMap = HashMap<String, Int>()
-        sortedInfectedHistoryDates.forEach {
-            valueMap[it] = 0
-        }
-        overallCountry?.infectedLocations?.forEach {
-            sortedInfectedHistoryDates.forEachIndexed { index, currentDate ->
-                val nextIndexDate = index + 1
-                if (nextIndexDate < sortedInfectedHistoryDates.size) {
-                    val todayInfection = it.infectedHistory?.get(currentDate) ?: 0
-                    val yesterdayInfection =
-                        it.infectedHistory?.get(sortedInfectedHistoryDates[nextIndexDate]) ?: 0
-                    val newlyAdded = todayInfection - yesterdayInfection
-                    if (newlyAdded > 0) {
-                        val currentValue = valueMap[currentDate] ?: 0
-                        valueMap[currentDate] = currentValue + newlyAdded
-                    }
+        return infectedHistoryDates
+    }
 
-                }
-            }
+    fun populateDailyHistoryYAxisData(dailyInfectedMap: Map<String, Int>): ArrayList<Entry> {
+        val yAxisInfectedHistory = ArrayList<Entry>()
+        dailyInfectedMap.keys.forEachIndexed { position, key ->
+            yAxisInfectedHistory.add(
+                Entry(
+                    position.toFloat(),
+                    dailyInfectedMap[key]?.toFloat() ?: CountryDetailFragment.DEFAULT_FLOAT
+                )
+            )
         }
-        return valueMap.toSortedMap(mostInfectedComparator)
+        return yAxisInfectedHistory
+    }
+
+    fun generateLineDataSet(yAxisInfectedHistory: ArrayList<Entry>, textColor: Int): LineDataSet {
+        val lineDataSet = LineDataSet(yAxisInfectedHistory, EMPTY_STRING)
+        lineDataSet.setDrawValues(false)
+        lineDataSet.setColors(CountryDetailFragment.color)
+        lineDataSet.valueTextColor = textColor
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.setDrawFilled(true)
+        lineDataSet.lineWidth = CountryDetailFragment.LINE_WIDTH
+        return lineDataSet
     }
 
     private fun generateSortedHistoryKeys(keys: ArrayList<String>): List<String> {
@@ -122,6 +161,7 @@ class CountryDetailViewModel : CoreViewModel<ICovidView>() {
         const val DEFAULT_COUNT = 0
         const val DEFAULT_INDEX = 0
         const val DEFAULT_CITY_SIZE = 1
+        const val DEFAULT_NEXT_INDEX = 1
     }
 
 }
