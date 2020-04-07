@@ -47,12 +47,13 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
     private val heatMapColors = intArrayOf(Color.rgb(240, 85, 69), Color.rgb(127, 0, 0))
     private var isDarkMode = false
     private var areMarkersVisible = false
+    private lateinit var mapFragment: SupportMapFragment
 
     override fun bindData() {
         viewModel.subscribe(this, lifecycleOwner)
         super.bindData()
         isDarkMode = resources.getBoolean(R.bool.isDarkMode)
-        val mapFragment = this.childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment = this.childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         val postListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -105,6 +106,7 @@ class CovidMapFragment : CoreFragment<FragmentCovidMapBinding>(), IPrimaryFragme
         super.onResume()
         subscribeToNavigationHost()
         updateBottomNavigationSelection(bottomNavOptionId)
+        mapFragment.onResume()
     }
 
     override fun onPause() {
