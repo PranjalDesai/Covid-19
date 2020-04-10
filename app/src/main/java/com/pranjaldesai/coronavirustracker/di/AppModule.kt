@@ -7,6 +7,7 @@ import com.pranjaldesai.coronavirustracker.data.preferences.CoreSharedPreference
 import com.pranjaldesai.coronavirustracker.ui.CountryDetailViewModel
 import com.pranjaldesai.coronavirustracker.ui.CovidDetailViewModel
 import com.pranjaldesai.coronavirustracker.ui.CovidMapViewModel
+import com.pranjaldesai.coronavirustracker.ui.CovidTipViewModel
 import com.pranjaldesai.coronavirustracker.ui.dialog.CoreSortDialog
 import com.pranjaldesai.coronavirustracker.ui.dialog.CountrySearchDialog
 import com.pranjaldesai.coronavirustracker.ui.shared.ImageFullScreenDialog
@@ -28,4 +29,5 @@ val appModule = module(override = true) {
     viewModel { CovidMapViewModel() }
     viewModel { CovidDetailViewModel() }
     viewModel { CountryDetailViewModel() }
+    viewModel { CovidTipViewModel() }
 }

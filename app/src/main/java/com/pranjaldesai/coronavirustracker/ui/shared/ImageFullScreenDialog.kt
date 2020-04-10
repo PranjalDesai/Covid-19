@@ -66,6 +66,29 @@ class ImageFullScreenDialog(
         return this
     }
 
+    fun imageUrl(imageUrl: String, title: String): ImageFullScreenDialog {
+        fullScreenToolbar.title = title
+        externalImagePicasso.load(imageUrl)
+            .placeholder(R.drawable.ic_action_placeholder)
+            .into(fullScreenPhotoView)
+        externalImagePicasso.load(imageUrl).into(object : Target {
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                bitmap?.let {
+                    imageBitmap = bitmap
+                    fullScreenShareButton.visibility = View.VISIBLE
+                }
+            }
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                fullScreenShareButton.visibility = View.GONE
+            }
+
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+        })
+        fullScreenPhotoView.tag = imageUrl
+        return this
+    }
+
 
     private fun tapListener(listener: (tapOutsideImage: Boolean) -> Unit) {
         fullScreenToolbar.apply {

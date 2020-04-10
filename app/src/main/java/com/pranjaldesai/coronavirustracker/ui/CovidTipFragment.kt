@@ -2,6 +2,7 @@ package com.pranjaldesai.coronavirustracker.ui
 
 import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
@@ -11,11 +12,13 @@ import com.pranjaldesai.coronavirustracker.databinding.FragmentCovidTipBinding
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreListFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.IPrimaryFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.ImageFullScreenDialog
+import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class CovidTipFragment :
-    CoreListFragment<FragmentCovidTipBinding, TipsAdapter>(), IPrimaryFragment {
+    CoreListFragment<FragmentCovidTipBinding, TipsAdapter>(), IPrimaryFragment, ICovidView {
     @LayoutRes
     override val layoutResourceId: Int = R.layout.fragment_covid_tip
 
@@ -33,6 +36,8 @@ class CovidTipFragment :
     override val recyclerViewAdapter: TipsAdapter = TipsAdapter(ArrayList()) {
         onTipSelected(it)
     }
+    override val lifecycleOwner: LifecycleOwner by lazy { this }
+    private val viewModel: CovidTipViewModel by viewModel()
     private val preventionTipArray: List<String> by lazy {
         resources.getStringArray(R.array.prevention_tip_urls).toList()
     }
@@ -47,13 +52,19 @@ class CovidTipFragment :
 
     override fun loadData() = loadTipUrls()
 
+    override fun bindData() {
+        viewModel.subscribe(this, lifecycleOwner)
+        viewModel.preventionTipArray = preventionTipArray
+        viewModel.misconceptionTipArray = misconceptionTipArray
+        viewModel.travelTipArray = travelTipArray
+        super.bindData()
+    }
+
     override fun initializeLayout() {
         binding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when (tab?.position) {
-                    PREVENTION_TAB -> recyclerViewAdapter.updateData(preventionTipArray)
-                    MISCONCEPTION_TAB -> recyclerViewAdapter.updateData(misconceptionTipArray)
-                    TRAVEL_TAB -> recyclerViewAdapter.updateData(travelTipArray)
+                viewModel.updateTips(binding.tabs.selectedTabPosition)?.let {
+                    recyclerViewAdapter.updateData(it)
                 }
             }
 
@@ -69,7 +80,10 @@ class CovidTipFragment :
 
     private fun onTipSelected(position: Int) {
         val specificTip = recyclerViewAdapter.getItemAtPosition(position)
-        imageFullScreenDialog.imageUrl(specificTip).show()
+        imageFullScreenDialog.imageUrl(
+            specificTip,
+            viewModel.generateCategoryTitle(binding.tabs.selectedTabPosition)
+        ).show()
     }
 
     override fun onBackButtonClicked() {
@@ -93,9 +107,5 @@ class CovidTipFragment :
         imageFullScreenDialog.dismiss()
     }
 
-    companion object {
-        const val PREVENTION_TAB = 0
-        const val MISCONCEPTION_TAB = 1
-        const val TRAVEL_TAB = 2
-    }
+
 }
