@@ -5,7 +5,7 @@ data class CovidStats(
     val confirmed: Confirmed?,
     val death: Death?,
     val recovered: Recovered?,
-    var isUpdateAvailable: String?
+    val update: Update?
 ) {
     constructor() : this(null, null, null, null)
 }

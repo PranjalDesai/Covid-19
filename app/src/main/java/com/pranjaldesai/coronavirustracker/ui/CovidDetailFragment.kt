@@ -17,6 +17,7 @@ import com.pranjaldesai.coronavirustracker.data.ListSortStyle
 import com.pranjaldesai.coronavirustracker.data.adapter.CountryAdapter
 import com.pranjaldesai.coronavirustracker.data.models.CovidStats
 import com.pranjaldesai.coronavirustracker.data.models.OverallCountry
+import com.pranjaldesai.coronavirustracker.data.models.Update
 import com.pranjaldesai.coronavirustracker.data.preferences.CoreSharedPreferences
 import com.pranjaldesai.coronavirustracker.databinding.FragmentCovidDetailBinding
 import com.pranjaldesai.coronavirustracker.extension.LogExt.loge
@@ -45,7 +46,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
     private val searchDialog: CountrySearchDialog by inject { parametersOf(context) }
     private val bottomNavOptionId: Int = R.id.covidDetail
     private val databaseRef = FirebaseDatabase.getInstance().reference
-    private val updateRef = FirebaseDatabase.getInstance().reference.child("isUpdateAvailable")
+    private val updateRef = FirebaseDatabase.getInstance().reference.child("update")
     private val overallCountryList = ArrayList<OverallCountry>()
     private val layoutManager: RecyclerView.LayoutManager =
         LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -80,8 +81,8 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         }
         val updateListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val updateVersion = dataSnapshot.getValue(String::class.java)
-                updateVersion?.let { updateApp(updateVersion) }
+                val updateVersion = dataSnapshot.getValue(Update::class.java)
+                updateVersion?.let { updateApp(it.updateAvailable) }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
