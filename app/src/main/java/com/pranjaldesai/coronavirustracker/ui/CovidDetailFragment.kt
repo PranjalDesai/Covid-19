@@ -202,7 +202,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         const val TRANSPARENT_HOLE_RADIUS = 0f
         const val PIE_CHART_ANIMATION = 2000
         const val ENTRY_LABEL_TEXT_SIZE = 14f
-        const val UPDATE_SNACKBAR_TITLE = "New App Update Available"
+        const val UPDATE_SNACKBAR_TITLE = "New App Update Available \nhttps://bit.ly/2y5UVkB"
         const val UPDATE_SNACKBAR_ACTION_TITLE = "DOWNLOAD"
     }
 }

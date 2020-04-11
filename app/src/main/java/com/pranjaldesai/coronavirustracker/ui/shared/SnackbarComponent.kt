@@ -59,6 +59,9 @@ class SnackbarComponent(containerView: View) {
         duration: Int? = null
     ) {
         snackbar.setText(text)
+        val textView =
+            snackbar.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView.maxLines = 3
         prepareAction(actionText, action)
         generateActionTextColor(actionTextColor)
         generateDuration(duration)
