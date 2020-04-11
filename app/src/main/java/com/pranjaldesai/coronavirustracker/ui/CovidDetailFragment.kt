@@ -12,7 +12,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.pranjaldesai.coronavirustracker.BuildConfig
 import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.data.ListSortStyle
 import com.pranjaldesai.coronavirustracker.data.adapter.CountryAdapter
@@ -31,7 +30,6 @@ import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import timber.log.Timber
 
 class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimaryFragment,
     ICovidView {
@@ -65,7 +63,6 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
     override fun bindData() {
         super.bindData()
         viewModel.subscribe(this, lifecycleOwner)
-        Timber.i("Pranjal ${BuildConfig.VERSION_NAME}")
         viewModel.isDarkMode = resources.getBoolean(R.bool.isDarkMode)
         binding.detailRecyclerview.adapter = recyclerViewAdapter
         binding.detailRecyclerview.layoutManager = layoutManager
