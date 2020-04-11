@@ -91,6 +91,6 @@ class CovidDetailViewModel : CoreCovidViewModel<ICovidView>() {
         const val RECOVERED_LABEL = "Recovered"
         const val PIE_DATA_TEXT_SIZE = 16f
         const val UPDATE_URL =
-            "https://firebasestorage.googleapis.com/v0/b/covid-19-abb5f.appspot.com/o/app-release.apk?alt=media"
+            "https://firebasestorage.googleapis.com/v0/b/covid-19-abb5f.appspot.com/o/coronavirus-tracker.apk?alt=media"
     }
 }
