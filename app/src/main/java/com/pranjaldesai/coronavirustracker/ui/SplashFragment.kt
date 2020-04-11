@@ -1,7 +1,6 @@
 package com.pranjaldesai.coronavirustracker.ui
 
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.database.FirebaseDatabase
 import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.databinding.FragmentSplashBinding
 import com.pranjaldesai.coronavirustracker.extension.launchOnMain
@@ -14,7 +13,6 @@ class SplashFragment : CoreFragment<FragmentSplashBinding>() {
     override fun bindData() {
         super.bindData()
         launchOnMain {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true)
             navigateIntoApp()
         }
 

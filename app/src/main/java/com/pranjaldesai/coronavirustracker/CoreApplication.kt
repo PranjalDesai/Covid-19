@@ -10,6 +10,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
+import com.google.firebase.database.FirebaseDatabase
 import com.pranjaldesai.coronavirustracker.di.*
 import com.pranjaldesai.coronavirustracker.extension.logTag
 import com.pranjaldesai.coronavirustracker.lifecycle.ApplicationState
@@ -41,6 +42,7 @@ class CoreApplication : Application(), LifecycleObserver {
         observeLifecycle()
         initializeCrashlytics()
         currentState = ApplicationState.CREATED
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
     }
 
     @CallSuper

@@ -33,13 +33,12 @@ class CountryDetailFragment(country: OverallCountry? = null) :
             false
         )
     }
-    private var isDarkMode = false
     override val recyclerView: RecyclerView by lazy { binding.expandableCityRecyclerview }
     override val toolbar: Toolbar? by lazy { binding.toolbar }
     override val toolbarTitle: String by lazy { this.country.countryName }
     private val viewModel: CountryDetailViewModel by viewModel()
     override val lifecycleOwner: LifecycleOwner by lazy { this }
-    override val recyclerViewAdapter: CitiesAdapter = CitiesAdapter(ArrayList(), isDarkMode) {
+    override val recyclerViewAdapter: CitiesAdapter = CitiesAdapter(ArrayList(), false) {
         onCitySelected(it)
     }
 
@@ -62,7 +61,7 @@ class CountryDetailFragment(country: OverallCountry? = null) :
         val dailyInfectedMap = viewModel.generateDailyInfected()
         val xAxis = ArrayList<String>(dailyInfectedMap.keys)
         val yAxisInfectedHistory = viewModel.populateDailyHistoryYAxisData(dailyInfectedMap)
-        val textColor = generateChartTextColor()
+        val textColor = viewModel.generateChartTextColor()
         val lineDataSet = viewModel.generateLineDataSet(yAxisInfectedHistory, textColor)
         val lineData = LineData(lineDataSet)
         with(binding.stackedLineChart) {
@@ -83,17 +82,9 @@ class CountryDetailFragment(country: OverallCountry? = null) :
         }
     }
 
-    private fun generateChartTextColor(): Int {
-        return if (isDarkMode) {
-            Color.WHITE
-        } else {
-            Color.BLACK
-        }
-    }
-
     override fun initializeLayout() {
         configureUpNavigation()
-        isDarkMode = resources.getBoolean(R.bool.isDarkMode)
+        viewModel.isDarkMode = resources.getBoolean(R.bool.isDarkMode)
     }
 
     override fun loadSavedInstanceState(savedInstanceState: Bundle?) {
@@ -104,7 +95,7 @@ class CountryDetailFragment(country: OverallCountry? = null) :
     }
 
     private fun loadCities() {
-        recyclerViewAdapter.updateTheme(isDarkMode)
+        recyclerViewAdapter.updateTheme(viewModel.isDarkMode)
         recyclerViewAdapter.updateData(viewModel.generateCities(country.countryName))
         hideProgressIndicator()
     }

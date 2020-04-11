@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -24,6 +25,7 @@ import com.pranjaldesai.coronavirustracker.ui.dialog.CoreSortDialog
 import com.pranjaldesai.coronavirustracker.ui.dialog.CountrySearchDialog
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreFragment
 import com.pranjaldesai.coronavirustracker.ui.shared.IPrimaryFragment
+import com.pranjaldesai.coronavirustracker.ui.shared.SnackbarComponent
 import com.pranjaldesai.coronavirustracker.ui.shared.subscribe
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,9 +41,11 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
     override val useCustomBackButtonAction: Boolean = true
     private val viewModel: CovidDetailViewModel by viewModel()
     private val sharedPreferences: CoreSharedPreferences by inject()
+    private val snackbarComponent: SnackbarComponent by inject { parametersOf(binding.rootDetailContainer) }
     private val searchDialog: CountrySearchDialog by inject { parametersOf(context) }
     private val bottomNavOptionId: Int = R.id.covidDetail
     private val databaseRef = FirebaseDatabase.getInstance().reference
+    private val updateRef = FirebaseDatabase.getInstance().reference.child("isUpdateAvailable")
     private val overallCountryList = ArrayList<OverallCountry>()
     private val layoutManager: RecyclerView.LayoutManager =
         LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -56,13 +60,10 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         )
     }
 
-    private var isDarkMode = false
-
     override fun bindData() {
         super.bindData()
         viewModel.subscribe(this, lifecycleOwner)
-        isDarkMode = resources.getBoolean(R.bool.isDarkMode)
-        viewModel.isDarkMode = isDarkMode
+        viewModel.isDarkMode = resources.getBoolean(R.bool.isDarkMode)
         binding.detailRecyclerview.adapter = recyclerViewAdapter
         binding.detailRecyclerview.layoutManager = layoutManager
         val postListener = object : ValueEventListener {
@@ -77,7 +78,18 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
                 loge(databaseError.toException())
             }
         }
+        val updateListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val updateVersion = dataSnapshot.getValue(String::class.java)
+                updateVersion?.let { updateApp(updateVersion) }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                loge(databaseError.toException())
+            }
+        }
         databaseRef.addValueEventListener(postListener)
+        updateRef.addValueEventListener(updateListener)
     }
 
     override fun onResume() {
@@ -107,11 +119,26 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         }
     }
 
+    private fun updateApp(updateVersion: String) {
+        if (viewModel.isUpdateAvailable(updateVersion)) {
+            snackbarComponent.showSnackBarWithAction(
+                UPDATE_SNACKBAR_TITLE,
+                UPDATE_SNACKBAR_ACTION_TITLE, ::downloadAppUpdate, Snackbar.LENGTH_INDEFINITE
+            )
+        } else {
+            snackbarComponent.dismissSnackbar()
+        }
+    }
+
+    private fun downloadAppUpdate() {
+        activity?.finishAndRemoveTask()
+        startActivity(viewModel.generateUpdateIntent())
+    }
+
     private fun updateCountryAdapter() {
         overallCountryList.clear()
         overallCountryList.addAll(viewModel.generateOverallCountryList())
         recyclerViewAdapter.updateData(overallCountryList)
-
     }
 
     override fun onBackButtonClicked() {
@@ -171,5 +198,7 @@ class CovidDetailFragment : CoreFragment<FragmentCovidDetailBinding>(), IPrimary
         const val TRANSPARENT_HOLE_RADIUS = 0f
         const val PIE_CHART_ANIMATION = 2000
         const val ENTRY_LABEL_TEXT_SIZE = 14f
+        const val UPDATE_SNACKBAR_TITLE = "New App Update Available"
+        const val UPDATE_SNACKBAR_ACTION_TITLE = "DOWNLOAD"
     }
 }
