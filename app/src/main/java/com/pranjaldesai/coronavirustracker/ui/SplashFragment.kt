@@ -3,7 +3,6 @@ package com.pranjaldesai.coronavirustracker.ui
 import androidx.navigation.fragment.findNavController
 import com.pranjaldesai.coronavirustracker.R
 import com.pranjaldesai.coronavirustracker.databinding.FragmentSplashBinding
-import com.pranjaldesai.coronavirustracker.extension.launchOnMain
 import com.pranjaldesai.coronavirustracker.ui.shared.CoreFragment
 
 class SplashFragment : CoreFragment<FragmentSplashBinding>() {
@@ -12,9 +11,7 @@ class SplashFragment : CoreFragment<FragmentSplashBinding>() {
 
     override fun bindData() {
         super.bindData()
-        launchOnMain {
-            navigateIntoApp()
-        }
+        navigateIntoApp()
 
     }
 
