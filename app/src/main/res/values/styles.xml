@@ -16,6 +16,7 @@
         <item name="android:textColorLink">@color/colorPrimary</item>
         <item name="title">@string/app_name</item>
         <item name="bottomSheetDialogTheme">@style/Covid.BottomSheetDialog</item>
+        <item name="snackbarButtonStyle">@style/snackbar_button</item>
     </style>
 
 
@@ -94,6 +95,14 @@
         <item name="android:layout_height">@dimen/splash_logo_height</item>
         <item name="android:layout_marginHorizontal">@dimen/splash_logo_margin_horizontal</item>
         <item name="android:src">@drawable/ic_action_splash_dna</item>
+    </style>
+
+    <style name="snackbar_button" parent="@style/Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textAppearance">@style/snackbar_button_textappearance</item>
+    </style>
+
+    <style name="snackbar_button_textappearance" parent="@style/TextAppearance.MaterialComponents.Button">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="SplashTitle">

@@ -18,4 +18,12 @@ abstract class CoreCovidViewModel<ViewTypeT : ICovidView> : CoreViewModel<ViewTy
         }
     }
 
+    fun generateSnackBarTextColor(): Int {
+        return if (isDarkMode) {
+            Color.BLACK
+        } else {
+            Color.WHITE
+        }
+    }
+
 }
